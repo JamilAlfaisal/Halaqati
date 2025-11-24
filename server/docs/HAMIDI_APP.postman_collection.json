@@ -1,0 +1,1315 @@
+{
+    "info": {
+        "name": "Quran School Management API",
+        "description": "Complete API collection for Quran School Management System with dual authentication (Students + Teachers/Admins)",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "version": "1.0.0"
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8080/api",
+            "description": "Base API URL"
+        },
+        {
+            "key": "student_token",
+            "value": "",
+            "description": "Student authentication token"
+        },
+        {
+            "key": "teacher_token",
+            "value": "",
+            "description": "Teacher authentication token"
+        },
+        {
+            "key": "admin_token",
+            "value": "",
+            "description": "Admin authentication token"
+        }
+    ],
+    "item": [
+        {
+            "name": "🔐 Authentication",
+            "description": "Authentication endpoints for students and teachers/admins",
+            "item": [
+                {
+                    "name": "Login (Universal)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const response = pm.response.json();",
+                                    "    const userType = response.user_type;",
+                                    "    const token = response.token;",
+                                    "    ",
+                                    "    if (userType === 'student') {",
+                                    "        pm.collectionVariables.set('student_token', token);",
+                                    "        console.log('Student token saved');",
+                                    "    } else if (userType === 'user') {",
+                                    "        const role = response.role;",
+                                    "        if (role === 'teacher') {",
+                                    "            pm.collectionVariables.set('teacher_token', token);",
+                                    "            console.log('Teacher token saved');",
+                                    "        } else if (role === 'admin') {",
+                                    "            pm.collectionVariables.set('admin_token', token);",
+                                    "            console.log('Admin token saved');",
+                                    "        }",
+                                    "    }",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phone\": \"+966507654321\",\n  \"pin\": \"0111\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Login endpoint that auto-detects student vs teacher/admin accounts"
+                    },
+                    "response": [
+                        {
+                            "name": "Student Login Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"phone\": \"+966507654321\",\n  \"pin\": \"0111\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/auth/login",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Student 1\",\n    \"email\": \"student1@hamidiapp.com\",\n    \"phone\": \"+966507654321\",\n    \"date_of_birth\": \"2005-01-01\",\n    \"teacher_id\": 1,\n    \"class_id\": 1,\n    \"student_id\": \"S0001\",\n    \"guardian_name\": \"Guardian of Student 1\",\n    \"guardian_phone\": \"+966509876541\",\n    \"is_active\": true,\n    \"created_at\": \"2025-11-16T11:18:54.000000Z\",\n    \"updated_at\": \"2025-11-16T11:18:54.000000Z\",\n    \"teacher\": {\n      \"id\": 1,\n      \"user_id\": 2,\n      \"employee_id\": \"T0001\",\n      \"bio\": \"Experienced Quran teacher with 6 years of teaching experience.\",\n      \"specialization\": \"Tajweed\",\n      \"user\": {\n        \"id\": 2,\n        \"name\": \"Teacher 1\",\n        \"email\": \"teacher1@hamidiapp.com\",\n        \"role\": \"teacher\",\n        \"phone\": \"+966501234561\"\n      }\n    },\n    \"class\": {\n      \"id\": 1,\n      \"name\": \"Class A\",\n      \"description\": \"Beginner level Quran class focused on Tajweed\",\n      \"teacher_id\": 1,\n      \"capacity\": 15,\n      \"room_number\": \"101\",\n      \"is_active\": true\n    }\n  },\n  \"user_type\": \"student\",\n  \"role\": \"student\",\n  \"token\": \"1|abcdef123456789...\",\n  \"token_type\": \"Bearer\"\n}"
+                        },
+                        {
+                            "name": "Invalid Credentials",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"phone\": \"+966507654321\",\n  \"pin\": \"9999\"\n}"
+                                }
+                            },
+                            "status": "Unprocessable Entity",
+                            "code": 422,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n  \"message\": \"The provided credentials are incorrect.\",\n  \"errors\": {\n    \"phone\": [\n      \"The provided credentials are incorrect.\"\n    ]\n  }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Login - Teacher",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const response = pm.response.json();",
+                                    "    pm.collectionVariables.set('teacher_token', response.token);",
+                                    "    console.log('Teacher token saved: ' + response.token);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phone\": \"+966501234561\",\n  \"pin\": \"1111\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Login - Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    const response = pm.response.json();",
+                                    "    pm.collectionVariables.set('admin_token', response.token);",
+                                    "    console.log('Admin token saved: ' + response.token);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phone\": \"+966501234567\",\n  \"pin\": \"1234\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Admin Login Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"phone\": \"+966501234567\",\n  \"pin\": \"1234\"\n}"
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Admin User\",\n    \"email\": \"admin@hamidiapp.com\",\n    \"role\": \"admin\",\n    \"phone\": \"+966501234567\",\n    \"date_of_birth\": \"1980-01-01\",\n    \"created_at\": \"2025-11-16T11:18:54.000000Z\",\n    \"updated_at\": \"2025-11-16T11:18:54.000000Z\"\n  },\n  \"user_type\": \"user\",\n  \"role\": \"admin\",\n  \"token\": \"3|admin123456789...\",\n  \"token_type\": \"Bearer\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Current User/Student",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{student_token}}",
+                                "description": "Change to {{teacher_token}} or {{admin_token}} as needed"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/auth/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "me"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Student Current User",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{student_token}}"
+                                    }
+                                ]
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Student 1\",\n    \"email\": \"student1@hamidiapp.com\",\n    \"phone\": \"+966507654321\",\n    \"date_of_birth\": \"2005-01-01\",\n    \"teacher_id\": 1,\n    \"class_id\": 1,\n    \"student_id\": \"S0001\",\n    \"guardian_name\": \"Guardian of Student 1\",\n    \"guardian_phone\": \"+966509876541\",\n    \"is_active\": true,\n    \"teacher\": {\n      \"id\": 1,\n      \"user\": {\n        \"id\": 2,\n        \"name\": \"Teacher 1\",\n        \"email\": \"teacher1@hamidiapp.com\"\n      }\n    },\n    \"class\": {\n      \"id\": 1,\n      \"name\": \"Class A\",\n      \"description\": \"Beginner level Quran class focused on Tajweed\"\n    }\n  },\n  \"user_type\": \"student\",\n  \"role\": \"student\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{student_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/auth/logout",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "logout"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "👨‍🎓 Student Endpoints",
+            "description": "API endpoints for student mobile app",
+            "item": [
+                {
+                    "name": "Student Dashboard",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{student_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/student/dashboard?week=47",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "student",
+                                "dashboard"
+                            ],
+                            "query": [
+                                {
+                                    "key": "week",
+                                    "value": "47",
+                                    "description": "Optional week number (1-53)"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Student Dashboard Success",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{student_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/student/dashboard?week=47",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "student",
+                                        "dashboard"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "week",
+                                            "value": "47"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n  \"student\": {\n    \"id\": 1,\n    \"name\": \"Student 1\",\n    \"email\": \"student1@hamidiapp.com\",\n    \"phone\": \"+966507654321\",\n    \"student_id\": \"S0001\",\n    \"class\": {\n      \"id\": 1,\n      \"name\": \"Class A\",\n      \"teacher_name\": \"Teacher 1\"\n    }\n  },\n  \"stats\": {\n    \"total_assignments\": 12,\n    \"completed_assignments\": 8,\n    \"pending_assignments\": 4,\n    \"completion_rate\": 67,\n    \"current_week\": 47,\n    \"weekly_progress\": {\n      \"pages_completed\": 15,\n      \"pages_target\": 20,\n      \"progress_percentage\": 75\n    }\n  },\n  \"recent_assignments\": [\n    {\n      \"id\": 1,\n      \"title\": \"Reading Assignment - Week 47\",\n      \"type\": \"reading\",\n      \"pages\": [1, 2, 3],\n      \"due_date\": \"2025-11-22\",\n      \"status\": \"pending\",\n      \"progress\": 60\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Memorization Assignment - Week 47\",\n      \"type\": \"memorizing\",\n      \"pages\": [4, 5],\n      \"due_date\": \"2025-11-22\",\n      \"status\": \"completed\",\n      \"progress\": 100,\n      \"completed_at\": \"2025-11-20T10:30:00Z\"\n    }\n  ],\n  \"teacher_feedback\": [\n    {\n      \"assignment_id\": 2,\n      \"feedback\": \"Excellent memorization! Keep up the good work.\",\n      \"rating\": 5,\n      \"created_at\": \"2025-11-20T14:30:00Z\"\n    }\n  ]\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Student Assignments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{student_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/student/assignments?week=47&status=pending",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "student",
+                                "assignments"
+                            ],
+                            "query": [
+                                {
+                                    "key": "week",
+                                    "value": "47",
+                                    "description": "Filter by week number"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "pending",
+                                    "description": "Filter by status: completed, pending, overdue"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Student Assignments Success",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{student_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/student/assignments?week=47&status=pending",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "student",
+                                        "assignments"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "week",
+                                            "value": "47"
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "pending"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n  \"assignments\": [\n    {\n      \"id\": 1,\n      \"title\": \"Reading Assignment - Week 47\",\n      \"description\": \"Weekly reading assignment for class A\",\n      \"type\": \"reading\",\n      \"pages\": [1, 2, 3, 4, 5],\n      \"assigned_date\": \"2025-11-16\",\n      \"due_date\": \"2025-11-22\",\n      \"week_number\": 47,\n      \"status\": \"pending\",\n      \"progress\": 60,\n      \"teacher\": {\n        \"id\": 1,\n        \"name\": \"Teacher 1\"\n      },\n      \"completion\": {\n        \"completed_pages\": [1, 2, 3],\n        \"notes\": \"Making good progress\",\n        \"last_updated\": \"2025-11-20T10:30:00Z\"\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Revision Assignment - Week 47\",\n      \"description\": \"Weekly revision assignment for class A\",\n      \"type\": \"revision\",\n      \"pages\": [10, 11],\n      \"assigned_date\": \"2025-11-16\",\n      \"due_date\": \"2025-11-22\",\n      \"week_number\": 47,\n      \"status\": \"pending\",\n      \"progress\": 0\n    }\n  ],\n  \"meta\": {\n    \"total\": 2,\n    \"current_week\": 47,\n    \"filter_status\": \"pending\"\n  }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Mark Assignment Complete",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{student_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"notes\": \"Completed successfully! Memorized all verses.\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/student/assignments/1/complete",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "student",
+                                "assignments",
+                                "1",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Assignment Progress",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{student_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"progress_percentage\": 75,\n  \"notes\": \"Almost finished, need more practice with pronunciation\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/student/assignments/1/progress",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "student",
+                                "assignments",
+                                "1",
+                                "progress"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Progress History",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{student_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/student/progress-history",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "student",
+                                "progress-history"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "👨‍🏫 Teacher Endpoints",
+            "description": "API endpoints for teacher mobile app and management",
+            "item": [
+                {
+                    "name": "Teacher Dashboard",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teacher/dashboard?week=47",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teacher",
+                                "dashboard"
+                            ],
+                            "query": [
+                                {
+                                    "key": "week",
+                                    "value": "47",
+                                    "description": "Optional week number"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Teacher's Students",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teacher/students",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teacher",
+                                "students"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Student Progress",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teacher/students/1/progress?week=47",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teacher",
+                                "students",
+                                "1",
+                                "progress"
+                            ],
+                            "query": [
+                                {
+                                    "key": "week",
+                                    "value": "47",
+                                    "description": "Optional week number"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Teacher's Classes",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teacher/classes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teacher",
+                                "classes"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Class Progress",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teacher/classes/1/progress?week=47",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teacher",
+                                "classes",
+                                "1",
+                                "progress"
+                            ],
+                            "query": [
+                                {
+                                    "key": "week",
+                                    "value": "47",
+                                    "description": "Optional week number"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "📚 Assignment Management",
+            "description": "Assignment CRUD operations and management",
+            "item": [
+                {
+                    "name": "Get Assignments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/assignments?week_number=47&type=memorizing",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "assignments"
+                            ],
+                            "query": [
+                                {
+                                    "key": "week_number",
+                                    "value": "47",
+                                    "description": "Filter by week number"
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "memorizing",
+                                    "description": "Filter by type: reading, revision, memorizing"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Assignment - Individual Student",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Surah Al-Fatiha Memorization\",\n  \"description\": \"Memorize the opening chapter of the Quran with proper tajweed\",\n  \"type\": \"memorizing\",\n  \"pages\": [1],\n  \"assigned_date\": \"2025-11-16\",\n  \"due_date\": \"2025-11-23\",\n  \"student_id\": 1,\n  \"week_number\": 47\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/assignments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "assignments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Assignment - Class",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Weekly Quran Reading\",\n  \"description\": \"Read pages 1-5 with proper tajweed and understanding\",\n  \"type\": \"reading\",\n  \"pages\": [1, 2, 3, 4, 5],\n  \"assigned_date\": \"2025-11-16\",\n  \"due_date\": \"2025-11-23\",\n  \"class_id\": 1,\n  \"week_number\": 47\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/assignments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "assignments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Assignment Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/assignments/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "assignments",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Assignment",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Updated Assignment Title\",\n  \"description\": \"Updated description\",\n  \"due_date\": \"2025-11-30\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/assignments/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "assignments",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Assignment (Deactivate)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/assignments/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "assignments",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Teacher Feedback",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"feedback\": \"Excellent memorization! Keep practicing the pronunciation of difficult words.\",\n  \"rating\": 5\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/assignments/1/students/1/feedback",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "assignments",
+                                "1",
+                                "students",
+                                "1",
+                                "feedback"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "🏫 Class Management",
+            "description": "Class and student management endpoints",
+            "item": [
+                {
+                    "name": "Get Classes",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/classes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Class",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Advanced Quran Class\",\n  \"description\": \"For students who have completed basic memorization\",\n  \"capacity\": 20,\n  \"room_number\": \"102\",\n  \"schedule\": {\n    \"days\": [\"Monday\", \"Wednesday\", \"Friday\"],\n    \"time\": \"09:00-10:30\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/classes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Class Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/classes/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Class",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Class Name\",\n  \"description\": \"Updated description\",\n  \"capacity\": 25\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/classes/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Student to Class",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"student_id\": 5\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/classes/1/students",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "1",
+                                "students"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Remove Student from Class",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/classes/1/students/5",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "1",
+                                "students",
+                                "5"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Class Weekly Progress",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/classes/1/weekly-progress?week=47",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "1",
+                                "weekly-progress"
+                            ],
+                            "query": [
+                                {
+                                    "key": "week",
+                                    "value": "47",
+                                    "description": "Week number (1-53)"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "👥 Resource Management",
+            "description": "General resource endpoints for admin/teacher access",
+            "item": [
+                {
+                    "name": "Get All Students",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/students?teacher_id=1&class_id=1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students"
+                            ],
+                            "query": [
+                                {
+                                    "key": "teacher_id",
+                                    "value": "1",
+                                    "description": "Filter by teacher ID"
+                                },
+                                {
+                                    "key": "class_id",
+                                    "value": "1",
+                                    "description": "Filter by class ID"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Student Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/students/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Student",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"guardian_name\": \"Updated Guardian Name\",\n  \"guardian_phone\": \"+1234567999\",\n  \"notes\": \"Updated notes about the student\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/students/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Teachers",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teachers",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teachers"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Teacher Details",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/teachers/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teachers",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Teacher",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{teacher_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"bio\": \"Updated bio with more experience details\",\n  \"specialization\": \"Tajweed and Qira'at\",\n  \"hire_date\": \"2020-01-15\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/teachers/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "teachers",
+                                "1"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Auto-set Content-Type for POST/PUT requests",
+                    "if (['POST', 'PUT', 'PATCH'].includes(pm.request.method)) {",
+                    "    if (!pm.request.headers.has('Content-Type')) {",
+                    "        pm.request.headers.add({",
+                    "            key: 'Content-Type',",
+                    "            value: 'application/json'",
+                    "        });",
+                    "    }",
+                    "}"
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Global test to log response for debugging",
+                    "if (pm.response.code >= 400) {",
+                    "    console.log('Error Response:', pm.response.json());",
+                    "}"
+                ]
+            }
+        }
+    ]
+}
