@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:halqati/widgets/buttons/elevated_dark.dart';
 import 'package:halqati/widgets/buttons/elevated_light.dart';
 import 'package:halqati/widgets/buttons/text_button_light.dart';
@@ -14,6 +15,9 @@ import 'package:halqati/widgets/textfields/text_field_password.dart';
 import 'package:halqati/widgets/textfields/text_field_date.dart';
 import 'package:halqati/widgets/textfields/text_area.dart';
 import 'package:halqati/widgets/textfields/text_field_search.dart';
+import 'package:halqati/widgets/lists/halaqat_list.dart';
+import 'package:halqati/widgets/lists/student_list.dart';
+import 'package:halqati/widgets/lists/assignment_list.dart';
 
 class TestingWidgets extends StatelessWidget {
   const TestingWidgets({super.key});
@@ -46,6 +50,9 @@ class TestingWidgets extends StatelessWidget {
           // TextFieldDate(hintText: "Select Date",textController: _textController,title: "Event Date",),
           // TextArea(textController: _textController,title: "Event Description",),
           TextFieldSearch(hintText: "Search using student ID #",textController: _textController),
+          HalaqatList(title: "Halaqet Alhamidi", studentNumber: 12,onTap: (){print("Nav to halaqat");}),
+          StudentList(name: "Jamil Alfaisal", totalPagesMemorized: 200, onTap: (){print("Nav to student");},),
+          AssignmentList(title: "Surah AL-Baqqara",dueDate: "2024-01-15", onPressed: (){print("Delete");},),
         ],
       ),
     );

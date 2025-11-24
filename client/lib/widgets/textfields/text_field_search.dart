@@ -16,9 +16,10 @@ class TextFieldSearch extends StatelessWidget {
       child: TextFormField(
         controller: textController,
         decoration: InputDecoration(
-          hintText: hintText,
-          prefixIcon: Icon(Icons.search),
-        ),
+            hintText: hintText,
+            prefixIcon: Icon(Icons.search),
+          )
+        ,
       ),
     );
   }
