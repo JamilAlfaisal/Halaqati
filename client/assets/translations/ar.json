@@ -1,3 +1,8 @@
 {
+  "app_name": "مدرسة التلاوة",
+  "user_type_selection":{
+    "student": "تسجيل الدخول كطالب",
+    "teacher": "تسجيل الدخول كمعلم"
+  },
   "hello": "مرحبا"
 }

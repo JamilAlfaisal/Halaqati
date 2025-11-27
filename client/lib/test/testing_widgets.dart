@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:halqati/widgets/buttons/elevated_dark.dart';
 import 'package:halqati/widgets/buttons/elevated_light.dart';
@@ -18,10 +19,16 @@ import 'package:halqati/widgets/textfields/text_field_search.dart';
 import 'package:halqati/widgets/lists/halaqat_list.dart';
 import 'package:halqati/widgets/lists/student_list.dart';
 import 'package:halqati/widgets/lists/assignment_list.dart';
+import 'package:halqati/widgets/lists/events_list.dart';
 
-class TestingWidgets extends StatelessWidget {
+class TestingWidgets extends StatefulWidget {
   const TestingWidgets({super.key});
 
+  @override
+  State<TestingWidgets> createState() => _TestingWidgetsState();
+}
+
+class _TestingWidgetsState extends State<TestingWidgets> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _textController = TextEditingController();
@@ -33,7 +40,9 @@ class TestingWidgets extends StatelessWidget {
         text: "Test",
         addBackButton: false,
       ),
-      floatingActionButton: FloatingButtonIcon(onPressed: (){print("floating button");}, text:'add student'),
+      floatingActionButton: FloatingButtonIcon(onPressed: (){
+        Navigator.pushNamed(context, '/user_type_selection');
+      }, text:'add student'),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: ListView(
         children: [
@@ -53,6 +62,22 @@ class TestingWidgets extends StatelessWidget {
           HalaqatList(title: "Halaqet Alhamidi", studentNumber: 12,onTap: (){print("Nav to halaqat");}),
           StudentList(name: "Jamil Alfaisal", totalPagesMemorized: 200, onTap: (){print("Nav to student");},),
           AssignmentList(title: "Surah AL-Baqqara",dueDate: "2024-01-15", onPressed: (){print("Delete");},),
+          EventsList(title: "Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice",
+            date: "2024-07-20",
+            description: 'review surah Al-Baqarah',
+            onTap: (){print('Nav to events page');},
+          ),
+          EventsList(title: "Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice",
+            date: "2024-07-20",
+            description: 'review surah Al-Baqarah',
+          ),
+          ElevatedDark(onPressed: (){
+            final currentLocale = context.locale;
+            final newLocale = (currentLocale.languageCode == 'en')
+                ? const Locale('ar') // Switch to Arabic
+                : const Locale('en');
+            context.setLocale(newLocale);
+          }, text: "change language",),
         ],
       ),
     );
