@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:halqati/config/app_theme.dart';
+import 'package:halqati/screens/common_screens/login_screen.dart';
 import 'package:halqati/test/testing_widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:halqati/screens/common_screens/user_type_selection.dart';
-
-
+import 'package:halqati/screens/teacher/home/home_app_bar.dart';
+import 'package:halqati/screens/teacher/home/add_halaqah_screen.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -34,10 +35,12 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme(),
       initialRoute: '/',
       routes: {
-        // '/': (context) => const TestingWidgets(),
+        '/': (context) => const TestingWidgets(),
         '/user_type_selection': (context) => const UserTypeSelection(),
+        '/login_screen':(context) => const LoginScreen(),
+        '/home_app_bar':(context) => const HomeAppBar(),
+        '/add_halaqah_screen':(context) => const AddHalaqahScreen(),
       },
-      home: TestingWidgets(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class HalaqatList extends StatelessWidget {
@@ -16,6 +17,7 @@ class HalaqatList extends StatelessWidget {
     return GestureDetector(
       onTap: ()=>onTap(),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 5,
         children: [
           Text(
@@ -23,7 +25,7 @@ class HalaqatList extends StatelessWidget {
             style: TextTheme.of(context).bodyLarge,
           ),
           Text(
-            "$studentNumber students",
+            "$studentNumber ${'students'.tr()}",
             style: TextTheme.of(context).titleSmall,
           ),
         ],

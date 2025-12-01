@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class VerseNumber extends StatelessWidget {
   final bool selected;
-  final Function  onPressed;
-  final int num;
+  final VoidCallback  onPressed;
+  final String num;
   const VerseNumber({super.key, required this.onPressed, required this.num, required this.selected});
 
   @override
   Widget build(BuildContext context) {
     return Align(
       child: ElevatedButton(
-            onPressed: ()=>onPressed,
+            onPressed: onPressed,
             style: selected
         ?ButtonStyle(
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(

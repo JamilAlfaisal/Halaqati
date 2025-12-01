@@ -1,8 +1,74 @@
 {
   "app_name": "Al-Tilawah School",
-    "user_type_selection":{
+  "students": "Students",
+  "user_type_selection":{
     "student": "Login as Student",
     "teacher": "Login as Teacher"
+  },
+  "login_screen": {
+    "welcome_back": "Welcome Back!",
+    "phone": "Phone Number",
+    "hint_phone": "Enter your phone number",
+    "password": "Password",
+    "hint_password": "Enter your password",
+    "forget_password": "Forgot Password?",
+    "login_button": "Login",
+    "logging_in": "Logging in..."
+  },
+  "text_field_password":{
+    "empty": "Password cannot be empty",
+    "invalid_characters": "Password must contain only letters and numbers"
+  },
+  "text_phone":{
+    "invalid_phone":"Invalid phone number",
+    "empty":"Phone number cannot be empty"
+  },
+  "home_app_bar": {
+    "home": "Home",
+    "settings": "Settings",
+    "profile": "Profile"
+  },
+  "home_screen": {
+    "halaqati": "My Halaqat",
+    "create": "Create Halaqah"
+  },
+  "profile_screen": {
+    "profile": "Profile",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone Number"
+  },
+  "add_halaqah_screen":{
+    "create": "Create Halaqah",
+    "halaqa_name": "Halaqah Name",
+    "enter_halaqa_name": "Enter Halaqah Name",
+    "create_button": "Create",
+    "creating_halaqa": "Creating Halaqah...",
+    "des":"description",
+    "capacity":"capacity",
+    "localtion":"location",
+    "enter_des":"enter description",
+    "enter_capacity":"enter capacity",
+    "enter_location":"enter location",
+    "invalid_capacity":"invalid capacity",
+    "empty_des":"description cannot be empty",
+    "empty_location":"location cannot be empty",
+    "empty_halaqa_name":"This field cannot be empty",
+    "creating_halaqa_error":"error in creating halaqah",
+    "creating_halaqa_success":"halaqah created successfully",
+    "only_letters_numbers":"Only letters and numbers are allowed",
+    "only_numbers":"Numbers only are allowed",
+    "schedule":"Schedule",
+    "select_days":"Select Days",
+    "start_time":"Start Time",
+    "end_time":"End Time",
+    "Monday":"Monday",
+    "Tuesday":"Tuesday",
+    "Wednesday":"Wednesday",
+    "Thursday":"Thursday",
+    "Friday":"Friday",
+    "Saturday":"Saturday",
+    "Sunday":"Sunday"
   },
   "hello": "Hello"
 }
