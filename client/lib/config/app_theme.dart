@@ -36,6 +36,12 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.backgroundWhite,
       fontFamily: 'Inter', // A modern, readable default font (or pick your own)
 
+      iconTheme: const IconThemeData(
+        color: AppColors.primaryBlue, // Set your specific color here
+        size: 30.0,              // Optionally set a global size
+        opacity: 0.9,
+      ),
+
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.backgroundWhite, // Background of the bar itself
         selectedItemColor: AppColors.primaryBlue, // Color of the active icon/label
@@ -59,6 +65,16 @@ class AppTheme {
 
         // Style when the field is focused
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: AppColors.primaryBlue, width: 3.0), // A dramatic change for demonstration
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: AppColors.primaryBlue, width: 3.0), // A dramatic change for demonstration
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: AppColors.primaryBlue, width: 3.0), // A dramatic change for demonstration
         ),

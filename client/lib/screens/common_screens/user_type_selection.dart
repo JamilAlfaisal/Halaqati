@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:halqati/widgets/buttons/elevated_dark.dart';
 import 'package:halqati/widgets/buttons/elevated_light.dart';
 
-class UserTypeSelection extends StatefulWidget {
+class UserTypeSelection extends StatelessWidget {
   const UserTypeSelection({super.key});
 
-  @override
-  State<UserTypeSelection> createState() => _UserTypeSelectionState();
-}
-
-class _UserTypeSelectionState extends State<UserTypeSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +29,7 @@ class _UserTypeSelectionState extends State<UserTypeSelection> {
                   child: Image.asset("assets/images/alhamidi_logo.png"),
                 ),
                 Text(
-                  'hello'.tr(),
+                  'app_name'.tr(),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
@@ -42,8 +37,21 @@ class _UserTypeSelectionState extends State<UserTypeSelection> {
             Column(
               spacing: 20,
               children: [
-                ElevatedDark(onPressed: (){Navigator.of(context).pop();}, text: "user_type_selection.student".tr(),),
-                ElevatedLight(onPressed: (){print("Student");}, text: "user_type_selection.teacher".tr(),),
+                ElevatedDark(onPressed: (){
+                  Navigator.of(context).pushNamed(
+                    '/login_screen',
+                    arguments: {
+                      'userType': 'student', // The parameter key
+                    },
+                  );
+                }, text: "user_type_selection.student".tr(),),
+                ElevatedLight(onPressed: (){
+                  Navigator.of(context).pushNamed(
+                      '/login_screen',
+                      arguments: {
+                        'userType': 'teacher', // The parameter key
+                      },);
+                }, text: "user_type_selection.teacher".tr(),),
               ],
             ),
           ],

@@ -16,19 +16,15 @@ import 'package:halqati/widgets/textfields/text_field_password.dart';
 import 'package:halqati/widgets/textfields/text_field_date.dart';
 import 'package:halqati/widgets/textfields/text_area.dart';
 import 'package:halqati/widgets/textfields/text_field_search.dart';
+import 'package:halqati/widgets/textfields/text_phone.dart';
 import 'package:halqati/widgets/lists/halaqat_list.dart';
 import 'package:halqati/widgets/lists/student_list.dart';
 import 'package:halqati/widgets/lists/assignment_list.dart';
 import 'package:halqati/widgets/lists/events_list.dart';
 
-class TestingWidgets extends StatefulWidget {
+class TestingWidgets extends StatelessWidget {
   const TestingWidgets({super.key});
 
-  @override
-  State<TestingWidgets> createState() => _TestingWidgetsState();
-}
-
-class _TestingWidgetsState extends State<TestingWidgets> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _textController = TextEditingController();
@@ -78,6 +74,7 @@ class _TestingWidgetsState extends State<TestingWidgets> {
                 : const Locale('en');
             context.setLocale(newLocale);
           }, text: "change language",),
+          TextPhone(hintText: "Your Email",textController: _textController,title: "Enter your email",),
         ],
       ),
     );
