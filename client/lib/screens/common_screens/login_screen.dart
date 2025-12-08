@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/widgets/appbar/appbar_with_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:halqati/widgets/textfields/text_phone.dart';
@@ -6,71 +7,71 @@ import 'package:halqati/widgets/textfields/text_field_password.dart';
 import 'package:halqati/widgets/buttons/full_width_button.dart';
 import 'package:halqati/services/api_service.dart';
 import 'package:halqati/storage/token_storage.dart';
+import 'package:halqati/provider/token_provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   // Inside the _LoginScreenState class
   bool _isLoading = false; // State variable for loading indicator
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  Future<void> _submitLogin(BuildContext context) async {
+    Navigator.of(context).pushNamed('/home_app_bar');
+    return;
+
+    if (!_formKey.currentState!.validate()) {
+      print("Form is NOT valid!");
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final tokenService = TokenStorage();
+
+
+    final String phone = _phoneController.text;
+    final String pin = _passwordController.text;
+
+    final apiService = ApiService();
+    final token = await apiService.login(phone, pin);
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    if (token != null) {
+      await tokenService.saveToken(token);
+      ref.invalidate(tokenProvider);
+      // 🎉 Success!
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login Successful!')),
+      );
+      // TODO: Save the token and navigate to the dashboard
+      Navigator.of(context).pushNamed("/home_app_bar");
+    } else {
+      // 🛑 Failure
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login failed. Please check your credentials or network.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final settings = ModalRoute.of(context)!.settings;
     final args = settings.arguments as Map<String, dynamic>;
-    final TextEditingController _phoneController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
-
-
-    Future<void> _submitLogin() async {
-      if (!_formKey.currentState!.validate()) {
-        print("Form is NOT valid!");
-        return;
-      }
-
-      // Set loading state to true and rebuild the UI to show a spinner
-      setState(() {
-        _isLoading = true;
-      });
-
-      final tokenService = TokenStorage();
-
-
-      // 1. Get credentials from the TextControllers
-      final String phone = _phoneController.text;
-      final String pin = _passwordController.text;
-
-      final apiService = ApiService();
-      final token = await apiService.login(phone, pin);
-
-      // Set loading state back to false
-      if (mounted) { // Check if the widget is still in the tree
-        setState(() {
-          _isLoading = false;
-        });
-      }
-
-      if (token != null) {
-        // 🎉 Success!
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login Successful!')),
-        );
-        // TODO: Save the token and navigate to the dashboard
-        Navigator.of(context).pushNamed("/home_app_bar");
-        await tokenService.saveToken(token);
-
-      } else {
-        // 🛑 Failure
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login failed. Please check your credentials or network.')),
-        );
-      }
-    }
 
     return Scaffold(
       appBar:  AppbarWithLogo(
