@@ -30,7 +30,8 @@
   },
   "home_screen": {
     "halaqati": "My Halaqat",
-    "create": "Create Halaqah"
+    "create": "Create Halaqah",
+    "no_halaqat": "No Halaqat"
   },
   "profile_screen": {
     "profile": "Profile",
@@ -68,7 +69,23 @@
     "Thursday":"Thursday",
     "Friday":"Friday",
     "Saturday":"Saturday",
-    "Sunday":"Sunday"
+    "Sunday":"Sunday",
+    "error":"Error creating new halaqah"
+  },
+  "halaqah_bottom_bar":{
+    "students":"Students",
+    "events":"events"
+  },
+  "halaqah_screen":{
+    "students":{
+      "search":"Search Students",
+      "total_pages":"Total pages memorized: ",
+      "add_student":"Add Student",
+      "no_students":"No Students"
+    },
+    "events":{
+
+    }
   },
   "hello": "Hello"
 }

@@ -11,16 +11,13 @@ class TextFieldSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: TextFormField(
-        controller: textController,
-        decoration: InputDecoration(
-            hintText: hintText,
-            prefixIcon: Icon(Icons.search),
-          )
-        ,
-      ),
+    return TextFormField(
+      controller: textController,
+      decoration: InputDecoration(
+          hintText: hintText,
+          prefixIcon: Icon(Icons.search),
+        )
+      ,
     );
   }
 }

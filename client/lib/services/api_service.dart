@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:halqati/models/student.dart';
+import 'package:halqati/models/halaqa_class.dart';
+
 
 class ApiService {
   // 💡 IMPORTANT: Use the correct IP for your emulator/device
@@ -109,6 +112,65 @@ class ApiService {
       // ❌ Network or Parsing Error
       print('Failed to connect or process data: $e');
       return false;
+    }
+  }
+
+  Future<List<HalaqaClass>> getClasses(String token) async {
+    final url = Uri.parse('$_baseUrl/classes');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        // print(data);
+        // depending on your Laravel API structure
+        if (data != null) {
+          final classList = data as List;
+          // print(classList);
+          return classList.map((json) => HalaqaClass.fromJson(json["class"])).toList();
+        }
+        print("Unexpected API response structure");
+        return [];
+      } else {
+        print("Fetch Classes Failed: ${response.statusCode}");
+        return [];
+      }
+    } catch (e) {
+      print("Network Error: $e");
+      return [];
+    }
+  }
+
+  Future<List<Student>?> getStudentsByClass(String token, int classId)async{
+    final url = Uri.parse('$_baseUrl/classes');
+    try{
+      print("getStudentsByClass");
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization':'Bearer $token',
+          'Access':'application/json'
+        }
+      );
+      if(response.statusCode == 200){
+        final data = jsonDecode(response.body);
+        // print(data[classId]['class']['students']);
+        final studentsList = data[classId]['class']['students'] as List;
+        // print(studentsList);
+        return studentsList.map((json)=> Student.fromJson(json)).toList();
+      }else{
+        print("Fetch students Failed: ${response.statusCode}");
+        return null;
+      }
+    }catch(e){
+      print("Network Error: $e");
     }
   }
 }

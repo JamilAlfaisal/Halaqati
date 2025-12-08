@@ -30,7 +30,8 @@
   },
   "home_screen": {
     "halaqati": "حلقاتي",
-    "create": "إنشاء حلقة"
+    "create": "إنشاء حلقة",
+    "no_halaqat": "لا يوجد حلقات"
   },
   "profile_screen": {
     "profile": "الملف الشخصي",
@@ -68,7 +69,23 @@
     "Thursday":"الخميس",
     "Friday":"الجمعة",
     "Saturday":"السبت",
-    "Sunday":"الأحد"
+    "Sunday":"الأحد",
+    "error":"حدث خطا اثناء ما"
+  },
+  "halaqah_bottom_bar":{
+    "students":"التلاميذ",
+    "events":"الاحداث"
+  },
+  "halaqah_screen":{
+    "students":{
+      "search":"ابحث عن تلاميذ",
+      "total_pages":"مجموع الصفحات المحفوظه",
+      "add_student":"اضافة تلميذ",
+      "no_students":"لا يوجد تلاميذ"
+    },
+    "events":{
+
+    }
   },
   "hello": "مرحبا"
 }

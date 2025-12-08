@@ -27,7 +27,7 @@ class TextArea extends StatelessWidget {
           minLines: 5,
           validator: (value){
             // print(value);
-            final forbiddenPattern  = RegExp(r'^[a-zA-Z0-9_-]+$');
+            final forbiddenPattern  = RegExp(r'^[ a-zA-Z0-9_-]+$');
             if (value == null || value.isEmpty) {
               return 'add_halaqah_screen.empty_halaqa_name'.tr();
             }

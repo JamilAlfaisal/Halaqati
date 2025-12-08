@@ -66,12 +66,16 @@ class _AddHalaqahScreenState extends State<AddHalaqahScreen> {
     "السبت":"Saturday",
     "الأحد":"Sunday"
   };
+  bool ability = true;
 
   @override
   Widget build(BuildContext context) {
     // Example of how you would call this in your button's logic
 
     void handleCreateClassButton() async {
+      setState(() {
+        ability = false;
+      });
       // 1. Retrieve the token (e.g., from your secure storage)
       // Assuming you have a way to securely retrieve the token
       if (!_formKey.currentState!.validate()) {
@@ -100,16 +104,31 @@ class _AddHalaqahScreenState extends State<AddHalaqahScreen> {
         scheduleDays: days,
         scheduleTime: '${startTime.text}-${endTime.text}',
       );
-
+      setState(() {
+        ability = true;
+      });
       if (success) {
-        print('wowowow');
+        // Navigator.of(context).pushReplacementNamed('/home_app_bar');
+        Navigator.of(context).pop();
       } else {
-        // Show an error message (e.g., Dialog)
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("Error"),
+            content: Text("add_halaqah_screen.error".tr()),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
       }
     }
-    print(days);
-    print(weekDaysData[0]['day']);
-    print(enDays[weekDaysData[0]['day']]);
+    // print(days);
+    // print(weekDaysData[0]['day']);
+    // print(enDays[weekDaysData[0]['day']]);
     return Scaffold(
       appBar: AppbarWithButton(
         text: "add_halaqah_screen.create".tr(),
@@ -195,7 +214,8 @@ class _AddHalaqahScreenState extends State<AddHalaqahScreen> {
                   onPressed: (){
                     handleCreateClassButton();
                   },
-                  text: "add_halaqah_screen.create_button".tr()
+                  text: "add_halaqah_screen.create_button".tr(),
+                  ability: ability,
                 ),
               ],
             ),
