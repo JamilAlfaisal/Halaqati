@@ -70,7 +70,8 @@
     "Friday":"الجمعة",
     "Saturday":"السبت",
     "Sunday":"الأحد",
-    "error":"حدث خطا اثناء ما"
+    "error":"حدث خطا اثناء ما",
+    ""
   },
   "halaqah_bottom_bar":{
     "students":"التلاميذ",

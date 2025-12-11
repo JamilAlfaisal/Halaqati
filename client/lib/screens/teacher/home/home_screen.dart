@@ -15,6 +15,7 @@ class HomeScreen extends ConsumerStatefulWidget{
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -35,6 +36,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
   @override
   Widget build(BuildContext context) {
     var classesAsync = ref.watch(getClassesProvider);
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double appBarHeight = kToolbarHeight;
 
     return Scaffold(
       appBar: AppbarWithLogo(text: "home_screen.halaqati".tr()),
@@ -61,13 +64,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
                   await Future.delayed(Duration(seconds: 1));
                 },
                 child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
                   children: [
-                    Center(
+                    Padding(
+                      padding: EdgeInsetsGeometry.fromLTRB(0,(screenHeight/2)-appBarHeight,0,0),
+                      child: Center(
                         child: Text(
                           "home_screen.no_halaqat".tr(),
                           style: Theme.of(context).textTheme.bodyLarge,
-                        )
+                        ),
+                      )
                     ),
                   ],
                 ),

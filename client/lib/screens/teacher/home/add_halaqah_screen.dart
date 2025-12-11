@@ -79,7 +79,6 @@ class _AddHalaqahScreenState extends State<AddHalaqahScreen> {
       // 1. Retrieve the token (e.g., from your secure storage)
       // Assuming you have a way to securely retrieve the token
       if (!_formKey.currentState!.validate()) {
-        print("Form is NOT valid!");
         return;
       }
       if (days.isEmpty){
