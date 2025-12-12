@@ -2,8 +2,7 @@
   "app_name": "Al-Tilawah School",
   "students": "Students",
   "user_type_selection":{
-    "student": "Login as Student",
-    "teacher": "Login as Teacher"
+    "login": "Login"
   },
   "login_screen": {
     "welcome_back": "Welcome Back!",
@@ -87,5 +86,31 @@
 
     }
   },
+  "student_app_bar":{
+      "bar":{
+        "dashboard":"Dashboard",
+        "events":"Events",
+        "settings":"Settings"
+      },
+      "events":{
+        "title":"Events",
+        "no_events":"No Events"
+      },
+      "dashboard":{
+        "memorized_pages":"Memorized Pages",
+        "title":"Dashboard"
+      },
+      "profile":{
+        "title":"Profile",
+        "name":"Name",
+        "email":"Email",
+        "phone":"Phone Number"
+      }
+    },
+    "teacher_profile":{
+      "no_name":"No Name",
+      "no_email":"No Email",
+      "no_phone":"No Phone Number"
+    },
   "hello": "Hello"
 }

@@ -11,7 +11,7 @@ class ApiService {
   // Physical Device (if on same network): Your PC's local IP (e.g., 192.168.1.10)
   static const String _baseUrl = 'http://10.0.2.2:8000/api';
 
-  Future<String?> login(String phone, String pin) async {
+  Future <Map<String, dynamic>?> login(String phone, String pin) async {
     final url = Uri.parse('$_baseUrl/auth/login');
 
     try {
@@ -35,9 +35,9 @@ class ApiService {
       if (response.statusCode == 200) {
         // ✅ Successful Login
         final token = responseBody['token'] as String?;
-        print('Login Success! Token: $token');
-        print(responseBody);
-        return token;
+        // print('Login Success! Token: $token');
+        // print(responseBody);
+        return responseBody;
 
       } else if (response.statusCode >= 400 && response.statusCode < 500) {
         // ❌ Client Error (403 Unauthorized, 422 Validation)

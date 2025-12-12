@@ -11,7 +11,7 @@ class ElevatedDark extends StatelessWidget {
     return Align(
       alignment: AlignmentGeometry.center,
       child: ElevatedButton(
-        onPressed: ()=>ability?onPressed():null,
+        onPressed: ability?()=>onPressed():null,
         style: ButtonStyle(
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(

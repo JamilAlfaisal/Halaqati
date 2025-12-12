@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:halqati/config/app_theme.dart';
 import 'package:halqati/screens/common_screens/login_screen.dart';
 import 'package:halqati/test/testing_widgets.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:halqati/screens/common_screens/user_type_selection.dart';
+import 'package:halqati/screens/common_screens/register_screen.dart';
 import 'package:halqati/screens/teacher/home/home_app_bar.dart';
 import 'package:halqati/screens/teacher/home/add_halaqah_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/screens/teacher/halaqah/halaqah_bottom_bar.dart';
+import 'package:halqati/screens/students/home/dashboard_app_bar.dart';
 
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -45,11 +46,12 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [routeObserver],
       routes: {
         '/': (context) => const TestingWidgets(),
-        '/user_type_selection': (context) => const UserTypeSelection(),
+        '/register_screen': (context) => const RegisterScreen(),
         '/login_screen':(context) => const LoginScreen(),
         '/home_app_bar':(context) => const HomeAppBar(),
         '/add_halaqah_screen':(context) => const AddHalaqahScreen(),
         '/halaqah_bottom_bar':(context) => const HalaqahBottomBar(),
+        '/dashboard_app_bar': (context) => const DashboardAppBar()
       },
     );
   }
