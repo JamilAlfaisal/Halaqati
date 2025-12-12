@@ -44,7 +44,7 @@ class TestingWidgets extends ConsumerWidget {
         addBackButton: false,
       ),
       floatingActionButton: FloatingButtonIcon(onPressed: (){
-        Navigator.pushNamed(context, '/user_type_selection');
+        Navigator.pushNamed(context, '/register_screen');
       }, text:'add student'),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: ListView(
@@ -61,7 +61,7 @@ class TestingWidgets extends ConsumerWidget {
           // TextFieldPassword(hintText: "Your Password",textController: _textController,title: "Enter your password",),
           // TextFieldDate(hintText: "Select Date",textController: _textController,title: "Event Date",),
           // TextArea(textController: _textController,title: "Event Description",),
-          TextFieldSearch(hintText: "Search using student ID #",textController: _textController),
+          // TextFieldSearch(hintText: "Search using student ID #",textController: _textController),
           HalaqatList(title: "Halaqet Alhamidi", studentNumber: 12,onTap: (){print("Nav to halaqat");}),
           StudentList(name: "Jamil Alfaisal", totalPagesMemorized: 200, onTap: (){print("Nav to student");},),
           AssignmentList(title: "Surah AL-Baqqara",dueDate: "2024-01-15", onPressed: (){print("Delete");},),

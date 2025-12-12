@@ -8,6 +8,11 @@ import 'package:halqati/widgets/buttons/full_width_button.dart';
 import 'package:halqati/services/api_service.dart';
 import 'package:halqati/storage/token_storage.dart';
 import 'package:halqati/provider/token_provider.dart';
+import 'package:halqati/provider/student_provider.dart';
+import 'package:halqati/provider/teacher_provider.dart';
+import 'package:halqati/models/teacher.dart';
+import 'package:halqati/models/student.dart';
+
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -24,11 +29,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _submitLogin(BuildContext context) async {
-    Navigator.of(context).pushNamed('/home_app_bar');
-    return;
+    // Navigator.of(context).pushNamed('/home_app_bar');
+    // return;
 
     if (!_formKey.currentState!.validate()) {
-      print("Form is NOT valid!");
+      // print("Form is NOT valid!");
       return;
     }
 
@@ -43,7 +48,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final String pin = _passwordController.text;
 
     final apiService = ApiService();
-    final token = await apiService.login(phone, pin);
+    final userData = await apiService.login(phone, pin);
 
     if (mounted) {
       setState(() {
@@ -51,15 +56,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       });
     }
 
-    if (token != null) {
-      await tokenService.saveToken(token);
+    if (userData != null) {
+      await tokenService.saveToken(userData['token']);
       ref.invalidate(tokenProvider);
       // 🎉 Success!
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Successful!')),
       );
-      // TODO: Save the token and navigate to the dashboard
-      Navigator.of(context).pushNamed("/home_app_bar");
+      print("Login Screen: ");
+
+      if (userData['role'] == 'teacher'){
+        final Teacher teacher = Teacher.fromJson(userData['user']);
+        ref.read(teacherProvider.notifier).setTeacher(teacher);
+        Navigator.of(context).pushNamed("/home_app_bar");
+      }else{
+        final Student student = Student.fromJson(userData['user']);
+        ref.read(studentProvider.notifier).setStudent(student);
+        Navigator.of(context).pushNamed("/dashboard_app_bar");
+      }
     } else {
       // 🛑 Failure
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,12 +84,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = ModalRoute.of(context)!.settings;
-    final args = settings.arguments as Map<String, dynamic>;
+    // final settings = ModalRoute.of(context)!.settings;
+    // final args = settings.arguments as Map<String, dynamic>;
 
     return Scaffold(
       appBar:  AppbarWithLogo(
-        text: args['userType']=='teacher'?"user_type_selection.teacher".tr():"user_type_selection.student".tr(),
+        text: "user_type_selection.login".tr(),
       ),
       body: SingleChildScrollView(
         child: Center(
