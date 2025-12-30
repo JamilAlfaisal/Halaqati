@@ -1,11 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/widgets/appbar/appbar_with_logo.dart';
 import 'package:halqati/widgets/lists/halaqat_list.dart';
 import 'package:halqati/widgets/buttons/floating_button_icon.dart';
 import 'package:halqati/provider/get_classes_provider.dart';
 import 'package:halqati/main.dart';
+import 'package:halqati/models/halaqa_class.dart';
+
+
 
 class HomeScreen extends ConsumerStatefulWidget{
   const HomeScreen({super.key});
@@ -38,6 +42,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
     var classesAsync = ref.watch(getClassesProvider);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double appBarHeight = kToolbarHeight;
+
+    // ref.listen<AsyncValue<List<HalaqaClass?>>>(
+    //   getClassesProvider,
+    //       (previous, next) {
+    //     next.whenOrNull(
+    //       error: (error, _) {
+    //         if (error is UnauthorizedException) {
+    //           ScaffoldMessenger.of(context).showSnackBar(
+    //             SnackBar(
+    //               content: Text('Session expired. Please login again.'.tr()),
+    //               duration: const Duration(seconds: 3),
+    //             ),
+    //           );
+    //         }
+    //       },
+    //     );
+    //   },
+    // );
 
     return Scaffold(
       appBar: AppbarWithLogo(text: "home_screen.halaqati".tr()),

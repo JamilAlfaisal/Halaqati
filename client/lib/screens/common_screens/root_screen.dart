@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:halqati/provider/profile_provider.dart';
+import 'package:halqati/provider/token_notifier.dart';
+import 'package:halqati/screens/common_screens/login_screen.dart';
+import 'package:halqati/models/auth_user.dart';
+import 'package:halqati/screens/teacher/home/home_app_bar.dart';
+import 'package:halqati/screens/students/home/dashboard_app_bar.dart';
+import 'package:halqati/core/exceptions/api_exceptions.dart';
+
+
+class RootScreen extends ConsumerWidget {
+  const RootScreen({super.key});
+
+  // You can actually remove the listener entirely now
+// since logout is handled in AuthNotifier
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
+    return authState.when(
+      data: (user) {
+        if (user == null) return const LoginScreen();
+        return switch (user) {
+          AuthTeacher() => HomeAppBar(),
+          AuthStudent() => DashboardAppBar(),
+        };
+      },
+      loading: () =>
+      const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (err, stack) {
+        print('Auth error in RootScreen: $err');
+        return const LoginScreen();
+      },
+    );
+  }
+}
+
+// class RootScanner extends ConsumerWidget {
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final authState = ref.watch(authProvider);
+//
+//     return authState.when(
+//       data: (token) => token == null ? LoginScreen() : HomeScreen(),
+//       loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+//       error: (err, stack) => Scaffold(body: Center(child: Text('Error: $err'))),
+//     );
+//   }
+// }

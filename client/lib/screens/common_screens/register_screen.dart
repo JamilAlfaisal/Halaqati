@@ -37,12 +37,21 @@ class RegisterScreen extends StatelessWidget {
               FullWidthButton(
                 onPressed: (context){
                 Navigator.of(context).pushNamed(
-                  '/login_screen',
+                  '/root_screen',
                   // arguments: {
                   //   'userType': 'student', // The parameter key
                   // },
                 );
               }, text: "user_type_selection.login".tr(),),
+              FullWidthButton(
+                onPressed: (context){
+                  Navigator.of(context).pushNamed(
+                    '/login_screen',
+                    // arguments: {
+                    //   'userType': 'student', // The parameter key
+                    // },
+                  );
+                }, text: "login_screen",),
             ],
           ),
         ),

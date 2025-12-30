@@ -1,22 +1,22 @@
 
 
-class ApiExceptions implements Exception {
+class ApiException implements Exception {
   final String message;
-  final int? status;
-  ApiExceptions(
+  final int? statusCode;
+  ApiException(
     this.message,
-    {this.status}
+    {this.statusCode}
   );
   @override
   String toString() => message;
 }
 
-class UnauthorizedException extends ApiExceptions{
+class UnauthorizedException extends ApiException{
   UnauthorizedException():
-    super("Token expired. Please login again.", status: 401);
+    super("Token expired. Please login again.", statusCode: 401);
 }
 
-class NetworkException extends ApiExceptions{
+class NetworkException extends ApiException{
   NetworkException():
     super('Network error. Check your connection.');
 }
