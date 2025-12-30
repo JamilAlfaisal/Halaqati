@@ -23,9 +23,12 @@ import 'package:halqati/widgets/lists/assignment_list.dart';
 import 'package:halqati/widgets/lists/events_list.dart';
 import 'package:halqati/services/api_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:halqati/provider/token_provider.dart';
+import 'package:halqati/provider/token_notifier.dart';
 import 'package:halqati/models/student.dart';
 import 'package:halqati/provider/api_service_provider.dart';
+import 'package:halqati/test/test_widget_a.dart';
+import 'package:halqati/test/test_widget_b.dart';
+
 
 class TestingWidgets extends ConsumerWidget {
   const TestingWidgets({super.key});
@@ -49,6 +52,8 @@ class TestingWidgets extends ConsumerWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: ListView(
         children: [
+          TestWidgetA(),
+          TestWidgetB(),
           // ElevatedDark(onPressed: (){print("Teacher");}, text: "Create Teacher Account",),
           // ElevatedLight(onPressed: (){print("Student");}, text: "Create Student Account",),
           // TextButtonLight(onPressed: (){print("TextButton");}, text: "Press Text Button",),
@@ -62,35 +67,35 @@ class TestingWidgets extends ConsumerWidget {
           // TextFieldDate(hintText: "Select Date",textController: _textController,title: "Event Date",),
           // TextArea(textController: _textController,title: "Event Description",),
           // TextFieldSearch(hintText: "Search using student ID #",textController: _textController),
-          HalaqatList(title: "Halaqet Alhamidi", studentNumber: 12,onTap: (){print("Nav to halaqat");}),
-          StudentList(name: "Jamil Alfaisal", totalPagesMemorized: 200, onTap: (){print("Nav to student");},),
-          AssignmentList(title: "Surah AL-Baqqara",dueDate: "2024-01-15", onPressed: (){print("Delete");},),
-          EventsList(title: "Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice",
-            date: "2024-07-20",
-            description: 'review surah Al-Baqarah',
-            onTap: (){print('Nav to events page');},
-          ),
-          EventsList(title: "Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice",
-            date: "2024-07-20",
-            description: 'review surah Al-Baqarah',
-          ),
-          ElevatedDark(onPressed: (){
-            final currentLocale = context.locale;
-            final newLocale = (currentLocale.languageCode == 'en')
-                ? const Locale('ar') // Switch to Arabic
-                : const Locale('en');
-            context.setLocale(newLocale);
-          }, text: "change language",),
-          TextPhone(hintText: "Your Email",textController: _textController,title: "Enter your email",),
-          ElevatedDark(
-            onPressed: ()async{
-              print(tokenAsyncValue.value);
-              if(tokenAsyncValue.value == null){
-                return;
-              }
-              final List<Student>? studentsList = await apiService.getStudentsByClass(tokenAsyncValue.value!, 0);
-              print(studentsList != null?studentsList[0].name:null);
-          }, text: "Test API")
+          // HalaqatList(title: "Halaqet Alhamidi", studentNumber: 12,onTap: (){print("Nav to halaqat");}),
+          // StudentList(name: "Jamil Alfaisal", totalPagesMemorized: 200, onTap: (){print("Nav to student");},),
+          // AssignmentList(title: "Surah AL-Baqqara",dueDate: "2024-01-15", onPressed: (){print("Delete");},),
+          // EventsList(title: "Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice",
+          //   date: "2024-07-20",
+          //   description: 'review surah Al-Baqarah',
+          //   onTap: (){print('Nav to events page');},
+          // ),
+          // EventsList(title: "Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice Quran Practice",
+          //   date: "2024-07-20",
+          //   description: 'review surah Al-Baqarah',
+          // ),
+          // ElevatedDark(onPressed: (){
+          //   final currentLocale = context.locale;
+          //   final newLocale = (currentLocale.languageCode == 'en')
+          //       ? const Locale('ar') // Switch to Arabic
+          //       : const Locale('en');
+          //   context.setLocale(newLocale);
+          // }, text: "change language",),
+          // TextPhone(hintText: "Your Email",textController: _textController,title: "Enter your email",),
+          // ElevatedDark(
+          //   onPressed: ()async{
+          //     print(tokenAsyncValue.value);
+          //     if(tokenAsyncValue.value == null){
+          //       return;
+          //     }
+          //     final List<Student>? studentsList = await apiService.getStudentsByClass(tokenAsyncValue.value!, 0);
+          //     print(studentsList != null?studentsList[0].name:null);
+          // }, text: "Test API")
         ],
       ),
     );

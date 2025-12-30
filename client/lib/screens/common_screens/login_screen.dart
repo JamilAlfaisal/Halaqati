@@ -5,14 +5,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:halqati/widgets/textfields/text_phone.dart';
 import 'package:halqati/widgets/textfields/text_field_password.dart';
 import 'package:halqati/widgets/buttons/full_width_button.dart';
-import 'package:halqati/services/api_service.dart';
-import 'package:halqati/storage/token_storage.dart';
-import 'package:halqati/provider/token_provider.dart';
 import 'package:halqati/provider/student_provider.dart';
 import 'package:halqati/provider/teacher_provider.dart';
 import 'package:halqati/models/teacher.dart';
 import 'package:halqati/models/student.dart';
-
+import 'package:halqati/provider/token_notifier.dart';
+import 'package:halqati/provider/api_service_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -30,24 +28,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _submitLogin(BuildContext context) async {
     // Navigator.of(context).pushNamed('/home_app_bar');
-    // return;
-
-    if (!_formKey.currentState!.validate()) {
-      // print("Form is NOT valid!");
-      return;
-    }
+    // return
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
     });
 
-    final tokenService = TokenStorage();
-
-
+    // final tokenService = TokenStorage();
     final String phone = _phoneController.text;
     final String pin = _passwordController.text;
 
-    final apiService = ApiService();
+    final apiService = ref.read(apiServiceProvider);
     final userData = await apiService.login(phone, pin);
 
     if (mounted) {
@@ -57,13 +49,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
 
     if (userData != null) {
-      await tokenService.saveToken(userData['token']);
-      ref.invalidate(tokenProvider);
+      await ref.read(tokenProvider.notifier).login(userData['token']);
       // 🎉 Success!
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Successful!')),
       );
-      print("Login Screen: ");
+      // print("Login Screen: ");
 
       if (userData['role'] == 'teacher'){
         final Teacher teacher = Teacher.fromJson(userData['user']);

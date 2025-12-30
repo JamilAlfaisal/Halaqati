@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'package:halqati/models/student.dart';
 import 'package:halqati/models/halaqa_class.dart';
@@ -9,10 +12,10 @@ class ApiService {
   // Android Emulator: 10.0.2.2
   // iOS Simulator: 127.0.0.1 (or localhost)
   // Physical Device (if on same network): Your PC's local IP (e.g., 192.168.1.10)
-  static const String _baseUrl = 'http://localhost:8000/api';
+  static const String _baseUrl = 'http://10.0.2.2:8000/api';
 
   Future <Map<String, dynamic>?> login(String phone, String pin) async {
-    print("this is the base url in the service page $_baseUrl");
+    // print("this is the base url in the service page $_baseUrl");
     final url = Uri.parse('$_baseUrl/auth/login');
 
     try {
@@ -35,7 +38,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         // ✅ Successful Login
-        final token = responseBody['token'] as String?;
+        // final token = responseBody['token'] as String?;
         // print('Login Success! Token: $token');
         // print(responseBody);
         return responseBody;
@@ -61,6 +64,63 @@ class ApiService {
       // ❌ Network/Connection Error
       print('Network connection failed or data invalid: $e');
       return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getProfile(String token) async {
+    final url = Uri.parse('$_baseUrl/auth/me');
+
+    try {
+      print("profile method has been called");
+      print("token: $token");
+
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      // ✅ CHECK STATUS CODE FIRST!
+      if (response.statusCode == 401) {
+        print("Unauthorized - invalid token");
+        throw UnauthorizedException();
+      }
+
+      // ✅ Only decode JSON if status is success
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+        print("Response: $responseBody");
+        return responseBody;
+      } else {
+        // For other errors, try to decode or return raw body
+        print("API error: ${response.statusCode}");
+        print("Response body: ${response.body}");
+        throw ApiException(
+          'Failed to fetch profile: ${response.statusCode}',
+          statusCode: response.statusCode,
+        );
+      }
+
+    } on SocketException {
+      print("Network error - no internet connection");
+      throw NetworkException();
+    } on TimeoutException {
+      print("Network timeout");
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on FormatException catch (e) {
+      // ✅ Handle JSON parsing errors explicitly
+      print("Failed to parse JSON response: $e");
+      throw ApiException('Invalid response format from server');
+    } catch (e) {
+      print("Unexpected error in getProfile: $e");
+      if (e is ApiException) rethrow;
+      throw ApiException('Unexpected error: $e');
     }
   }
 
@@ -126,26 +186,37 @@ class ApiService {
           'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
-      );
+      ).timeout(Duration(seconds: 10));
+
+      if(response.statusCode == 401){
+        throw UnauthorizedException();
+      }
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        // print(data);
-        // depending on your Laravel API structure
-        if (data != null) {
-          final classList = data as List;
-          // print(classList);
-          return classList.map((json) => HalaqaClass.fromJson(json["class"])).toList();
+        if (data != null && data is List) {
+          return data.map((json) => HalaqaClass.fromJson(json["class"])).toList();
         }
-        print("Unexpected API response structure");
-        return [];
+        return []; // Empty but valid response
       } else {
-        print("Fetch Classes Failed: ${response.statusCode}");
-        return [];
+        throw ApiException(
+          'Failed to fetch classes: ${response.statusCode}',
+          statusCode: response.statusCode,
+        );
       }
+    } on SocketException{
+      throw NetworkException();
+    } on TimeoutException {
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ApiException {
+      rethrow;
     } catch (e) {
-      print("Network Error: $e");
-      return [];
+      // if (e is ApiException) rethrow;
+      throw ApiException('Unexpected error: $e');
     }
   }
 
