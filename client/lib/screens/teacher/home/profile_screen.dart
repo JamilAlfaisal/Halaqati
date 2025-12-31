@@ -23,8 +23,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TeacherProfile(teacher: teacher),
+              SizedBox(height: 10,),
+              Text(
+                "teacher_profile.email_details".tr(),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ],
           ),
         ),

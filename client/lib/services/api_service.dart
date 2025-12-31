@@ -12,7 +12,7 @@ class ApiService {
   // Android Emulator: 10.0.2.2
   // iOS Simulator: 127.0.0.1 (or localhost)
   // Physical Device (if on same network): Your PC's local IP (e.g., 192.168.1.10)
-  static const String _baseUrl = 'http://10.0.2.2:8000/api';
+  static const String _baseUrl = 'http://localhost:8000/api';
 
   Future <Map<String, dynamic>?> login(String phone, String pin) async {
     // print("this is the base url in the service page $_baseUrl");
@@ -125,7 +125,7 @@ class ApiService {
   }
 
   Future<bool> createClass({
-    required String token, // The authentication token
+    required String token,
     required String name,
     required String description,
     required int capacity,
@@ -133,7 +133,8 @@ class ApiService {
     required List<String> scheduleDays, // List of days
     required String scheduleTime,       // Time string
   }) async {
-    final url = Uri.parse('$_baseUrl/classes'); // Assuming your endpoint is /api/classes
+    final url = Uri.parse(
+        '$_baseUrl/classes'); // Assuming your endpoint is /api/classes
 
     // 1. Construct the complete request body Map
     final Map<String, dynamic> requestBody = {
@@ -157,22 +158,45 @@ class ApiService {
           'Accept': 'application/json',
         },
         body: jsonEncode(requestBody), // Encode the whole Map to JSON
-      );
+      ).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 401) {
+        // print("Unauthorized - invalid token");
+        throw UnauthorizedException();
+      }
 
       if (response.statusCode == 201) {
         // ✅ Success: 201 Created is the standard for successful creation
         print('Class created successfully!');
         return true;
-      } else {
-        // ❌ Failure (4xx or 5xx)
-        final responseBody = jsonDecode(response.body);
-        print('Class Creation Failed (Status ${response.statusCode}): ${responseBody['message']}');
-        return false;
       }
+
+      if (response.statusCode == 422) {
+        throw ValidationException();
+      }
+
+      final responseBody = jsonDecode(response.body);
+      throw ApiException(
+        responseBody['message'] ?? 'Failed to create class',
+        statusCode: response.statusCode,
+      );
+    } on SocketException {
+      print("Network error - no internet connection");
+      throw NetworkException();
+    } on TimeoutException {
+      print("Network timeout");
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ValidationException {
+      rethrow;
     } catch (e) {
-      // ❌ Network or Parsing Error
-      print('Failed to connect or process data: $e');
-      return false;
+      // print("Unexpected error in getProfile: $e");
+      // if (e is ApiException) rethrow;
+      // throw ApiException('Unexpected error: $e');
+      rethrow;
     }
   }
 

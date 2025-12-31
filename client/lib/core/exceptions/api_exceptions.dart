@@ -20,3 +20,8 @@ class NetworkException extends ApiException{
   NetworkException():
     super('Network error. Check your connection.');
 }
+
+class ValidationException extends ApiException {
+  ValidationException():
+        super('Invalid Data Error',statusCode: 401);
+}

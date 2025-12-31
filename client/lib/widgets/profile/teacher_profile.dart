@@ -21,14 +21,15 @@ class TeacherProfile extends StatelessWidget {
           ),
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               teacher?.name??"teacher_profile.no_name".tr(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Text(
-              teacher?.id.toString()??"teacher_profile.no_name".tr(),
-              style: Theme.of(context).textTheme.bodyLarge,
+              "ID: #${teacher?.id.toString()??"teacher_profile.no_name".tr()}",
+              style: Theme.of(context).textTheme.labelSmall,
             ),
           ],
         )

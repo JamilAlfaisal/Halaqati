@@ -5,7 +5,7 @@ import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/widgets/appbar/appbar_with_logo.dart';
 import 'package:halqati/widgets/lists/halaqat_list.dart';
 import 'package:halqati/widgets/buttons/floating_button_icon.dart';
-import 'package:halqati/provider/get_classes_provider.dart';
+import 'package:halqati/provider/classes_provider.dart';
 import 'package:halqati/main.dart';
 import 'package:halqati/models/halaqa_class.dart';
 
@@ -34,17 +34,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
 
   @override
   void didPopNext() {
-    ref.refresh(getClassesProvider);
+    ref.refresh(classesProvider);
   }
 
   @override
   Widget build(BuildContext context) {
-    var classesAsync = ref.watch(getClassesProvider);
+    var classesAsync = ref.watch(classesProvider);
     final double screenHeight = MediaQuery.of(context).size.height;
     final double appBarHeight = kToolbarHeight;
 
     // ref.listen<AsyncValue<List<HalaqaClass?>>>(
-    //   getClassesProvider,
+    //   classesProvider,
     //       (previous, next) {
     //     next.whenOrNull(
     //       error: (error, _) {
@@ -65,36 +65,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
       appBar: AppbarWithLogo(text: "home_screen.halaqati".tr()),
       floatingActionButton: FloatingButtonIcon(
         onPressed: (){
-          Navigator.of(context).pushNamed("/add_halaqah_screen");
+          Navigator.of(context).pushReplacementNamed("/add_halaqah_screen");
         }, text:'home_screen.create'.tr()
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 20),
         child: classesAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, stack) => Center(
-            child: Text(
-              "Error loading halaqat",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
+          error: (e, stack) {
+
+            if (e is UnauthorizedException) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Error loading halaqat",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  // ✅ Add retry button for errors
+                  ElevatedButton(
+                    onPressed: () => ref.invalidate(classesProvider),
+                    child: Text("home_screen.retry".tr()),
+                  ),
+                ],
+              ),
+            );
+          },
           data: (halaqat){
-            if(halaqat.isEmpty){
+            if (halaqat == null || halaqat.isEmpty) {
               return RefreshIndicator(
                 onRefresh: () async {
-                  classesAsync = ref.refresh(getClassesProvider);
+                  classesAsync = ref.refresh(classesProvider);
                   await Future.delayed(Duration(seconds: 1));
                 },
                 child: ListView(
                   children: [
                     Padding(
-                      padding: EdgeInsetsGeometry.fromLTRB(0,(screenHeight/2)-appBarHeight,0,0),
-                      child: Center(
-                        child: Text(
-                          "home_screen.no_halaqat".tr(),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      )
+                        padding: EdgeInsetsGeometry.fromLTRB(0,(screenHeight/2)-appBarHeight,0,0),
+                        child: Center(
+                          child: Text(
+                            "home_screen.no_halaqat".tr(),
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        )
                     ),
                   ],
                 ),
@@ -102,7 +120,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
             }
             return RefreshIndicator(
               onRefresh: ()async{
-                ref.refresh(getClassesProvider);
+                ref.refresh(classesProvider);
                 // await Future.delayed(Duration(seconds: 1));
               },
               child: ListView.builder(

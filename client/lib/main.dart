@@ -13,6 +13,7 @@ import 'package:halqati/screens/students/home/dashboard_app_bar.dart';
 import 'package:halqati/screens/common_screens/root_screen.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
       // locale: const Locale('ar'),
       locale: context.locale,
       supportedLocales: context.supportedLocales,
+      navigatorKey: navigatorKey,
       localizationsDelegates: context.localizationDelegates,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(),

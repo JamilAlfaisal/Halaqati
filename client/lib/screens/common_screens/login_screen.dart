@@ -65,6 +65,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ref.read(studentProvider.notifier).setStudent(student);
         Navigator.of(context).pushNamed("/dashboard_app_bar");
       }
+      // Navigator.of(context).pushNamed("/root_screen");
     } else {
       // 🛑 Failure
       ScaffoldMessenger.of(context).showSnackBar(
