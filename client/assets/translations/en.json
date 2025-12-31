@@ -110,7 +110,8 @@
     "teacher_profile":{
       "no_name":"No Name",
       "no_email":"No Email",
-      "no_phone":"No Phone Number"
+      "no_phone":"No Phone Number",
+      "email_details": "Email Details"
     },
   "hello": "Hello"
 }

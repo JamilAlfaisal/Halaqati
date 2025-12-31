@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:halqati/core/exceptions/api_exceptions.dart';
+import 'package:halqati/core/utils/auth_utils.dart';
+import 'package:halqati/provider/profile_provider.dart';
 import 'package:halqati/widgets/appbar/appbar_with_button.dart';
 import 'package:halqati/widgets/textfields/text_field_normal.dart';
 import 'package:halqati/widgets/textfields/text_area.dart';
 import 'package:halqati/widgets/buttons/verse_number.dart';
 import 'package:halqati/widgets/buttons/elevated_dark.dart';
 import 'package:halqati/widgets/textfields/num_text_field.dart';
-import 'package:halqati/services/api_service.dart';
-import 'package:halqati/storage/token_storage.dart';
 import 'package:halqati/widgets/textfields/text_field_time.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:halqati/provider/classes_provider.dart';
 
-class AddHalaqahScreen extends StatefulWidget {
+class AddHalaqahScreen extends ConsumerStatefulWidget {
   const AddHalaqahScreen({super.key});
 
   @override
-  State<AddHalaqahScreen> createState() => _AddHalaqahScreenState();
+  ConsumerState<AddHalaqahScreen> createState() => _AddHalaqahScreenState();
 }
 
-class _AddHalaqahScreenState extends State<AddHalaqahScreen> {
+class _AddHalaqahScreenState extends ConsumerState<AddHalaqahScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController des = TextEditingController();
   TextEditingController loc = TextEditingController();
@@ -79,50 +82,89 @@ class _AddHalaqahScreenState extends State<AddHalaqahScreen> {
       // 1. Retrieve the token (e.g., from your secure storage)
       // Assuming you have a way to securely retrieve the token
       if (!_formKey.currentState!.validate()) {
+        setState(() {
+          ability = true;
+        });
         return;
       }
+
       if (days.isEmpty){
+        setState(() {
+          ability = true;
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('add_halaqah_screen.select_days'.tr()))
         );
-      }
-      final String? authToken = await TokenStorage().readToken();
-
-      if (authToken == null) {
-        print('Error: User not logged in (No token found)');
         return;
       }
 
-      // 2. Prepare the data from your form fields
-      final success = await ApiService().createClass(
-        token: authToken,
-        name: name.text, // Replace with form controller values
-        description: des.text,
-        capacity: int.tryParse(cap.text)??20,
-        roomNumber: loc.text,
-        scheduleDays: days,
-        scheduleTime: '${startTime.text}-${endTime.text}',
-      );
-      setState(() {
-        ability = true;
-      });
-      if (success) {
-        // Navigator.of(context).pushReplacementNamed('/home_app_bar');
-        Navigator.of(context).pop();
-      } else {
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: const Text("Error"),
-            content: Text("add_halaqah_screen.error".tr()),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text("OK"),
-              ),
-            ],
-          ),
+      try{
+        final success = await ref.read(classesProvider.notifier)
+            .createClass(
+          name: name.text,
+          description: des.text,
+          capacity: int.tryParse(cap.text)??20,
+          roomNumber: loc.text,
+          scheduleDays: days,
+          scheduleTime: '${startTime.text}-${endTime.text}',
         );
+
+        if (mounted) {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('add_halaqah_screen.success'.tr())),
+          );
+        }
+      } on ValidationException catch (e){
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.message),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      } on NetworkException {
+        // ✅ Handle network errors
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('add_halaqah_screen.network_error'.tr()),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } on UnauthorizedException {
+        // ✅ Auth errors handled by RootScreen, but you can show a message
+        if (mounted) {
+          await AuthHelper.handleLogout(ref as Ref);
+        }
+
+        // RootScreen will automatically navigate to login
+      } catch (e) {
+        // ✅ Generic error
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text("add_halaqah_screen.error_title".tr()),
+              content: Text(e.toString()),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("OK"),
+                ),
+              ],
+            ),
+          );
+        }
+      } finally {
+        // ✅ Always re-enable the button
+        if (mounted) {
+          setState(() {
+            ability = true;
+          });
+        }
       }
     }
     // print(days);

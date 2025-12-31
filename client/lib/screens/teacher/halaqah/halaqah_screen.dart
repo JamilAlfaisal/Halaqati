@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/models/halaqa_class.dart';
 import 'package:halqati/models/student.dart';
-// import 'package:halqati/provider/get_classes_provider.dart';
+// import 'package:halqati/provider/classes_provider.dart';
 import 'package:halqati/widgets/appbar/appbar_with_button.dart';
 import 'package:halqati/widgets/textfields/text_field_search.dart';
 import 'package:easy_localization/easy_localization.dart';

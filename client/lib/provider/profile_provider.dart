@@ -1,3 +1,4 @@
+import 'package:halqati/core/utils/auth_utils.dart';
 import 'package:halqati/provider/token_notifier.dart';
 import 'package:halqati/provider/api_service_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,8 @@ class AuthNotifier extends AsyncNotifier<AuthUser?> {
     if (tokenAsync.isLoading) return null;
 
     final token = tokenAsync.value;
-    if (token == null) return null;
+    print("profile provider token value $token");
+    if (token == null || token.isEmpty) return null;
 
     try {
       final profileData = await ref.read(apiServiceProvider).getProfile(token);
@@ -39,9 +41,10 @@ class AuthNotifier extends AsyncNotifier<AuthUser?> {
       print('Error in AuthNotifier: $e');
       // ✅ For ANY error when fetching profile, clear the token
       // This prevents infinite retries with a bad token
-      if (e is UnauthorizedException || e is ApiException) {
+      //e is ApiException
+      if (e is UnauthorizedException) {
         print('Clearing token due to auth/API error');
-        await ref.read(tokenProvider.notifier).logout();
+        await AuthHelper.handleLogout(ref);
       }
       rethrow;
     }
