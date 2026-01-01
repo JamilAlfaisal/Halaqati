@@ -13,8 +13,8 @@ class TeacherProfile extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(50),
-          child: Image.network(
-            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+          child: Image.asset(
+            'assets/images/profile.png',
             fit: BoxFit.cover,
             width: 100,
             height: 100,
