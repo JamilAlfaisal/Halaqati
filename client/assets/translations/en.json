@@ -1,6 +1,7 @@
 {
   "app_name": "Al-Tilawah School",
   "students": "Students",
+  "not_available": "Currently this option Is Not Available",
   "user_type_selection":{
     "login": "Login"
   },
@@ -111,7 +112,23 @@
       "no_name":"No Name",
       "no_email":"No Email",
       "no_phone":"No Phone Number",
-      "email_details": "Email Details"
+      "user_details": "User Details",
+      "email":"Email",
+      "password":"Password",
+      "change_password":"Change Password",
+      "phone_number":"Phone Number",
+      "DOB":"Date Of Birth",
+      "no_DOB": "No Date Of Birth",
+      "halaqat_details": "Halaqat Details",
+      "halaqat_number": "Halaqat Number",
+      "student_number": "Student Number"
+    },
+    "settings":{
+      "title": "Settings",
+      "logout": "Logout",
+      "english": "English",
+      "about": "About Us",
+      "report":"Report Issues"
     },
   "hello": "Hello"
 }

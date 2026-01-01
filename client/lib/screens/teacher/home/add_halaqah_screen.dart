@@ -112,8 +112,9 @@ class _AddHalaqahScreenState extends ConsumerState<AddHalaqahScreen> {
         if (mounted) {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('add_halaqah_screen.success'.tr())),
+            SnackBar(content: Text('add_halaqah_screen.creating_halaqa_success'.tr())),
           );
+          return;
         }
       } on ValidationException catch (e){
         if (mounted) {
@@ -257,6 +258,9 @@ class _AddHalaqahScreenState extends ConsumerState<AddHalaqahScreen> {
                   },
                   text: "add_halaqah_screen.create_button".tr(),
                   ability: ability,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).padding.bottom,
                 ),
               ],
             ),

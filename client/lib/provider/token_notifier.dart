@@ -32,13 +32,14 @@ class TokenNotifier extends AsyncNotifier<String?> {
   }
 
   Future<void> logout() async {
-    state = const AsyncLoading();
-
-    state = await AsyncValue.guard(() async {
+    try {
       final storage = ref.read(tokenStorageProvider);
       await storage.deleteToken();
-      return null; // State becomes null after logout
-    });
+      state = const AsyncData(null);
+    } catch (e, stack) {
+      state = AsyncError(e, stack);
+      state = const AsyncData(null);
+    }
   }
 }
 

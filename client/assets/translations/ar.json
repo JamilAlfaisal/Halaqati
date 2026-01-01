@@ -1,6 +1,7 @@
 {
   "app_name": "مدرسة التلاوة",
   "students": "طالب",
+  "not_available": "هذا الخيار غير متوفر حاليا",
   "user_type_selection":{
     "login": "تسجيل الدخول"
   },
@@ -69,7 +70,7 @@
     "Friday":"الجمعة",
     "Saturday":"السبت",
     "Sunday":"الأحد",
-    "error":"حدث خطا اثناء ما"
+    "error":"حدث خطا ما"
   },
   "halaqah_bottom_bar":{
     "students":"التلاميذ",
@@ -111,7 +112,23 @@
     "no_name":"لا يوجد اسم",
     "no_email":"لا يوجد بريد إلكتروني",
     "no_phone":"لا يوجد رقم هاتف",
-    "email_details": "معلومات المستخدم"
+    "user_details": "معلومات المستخدم",
+    "email":"البريد الإلكتروني",
+    "password":"كلمة المرور",
+    "change_password":"عدل كلمه المرور",
+    "phone_number":"رقم الهاتف",
+    "DOB":"تاريخ الميلاد",
+    "no_DOB": "لا يوجد تاريخ ميلاد",
+    "halaqat_details": "معلومات الحلقات",
+    "halaqat_number": "عدد الحالقات",
+    "student_number": "عدد التلاميذ"
   },
+  "settings":{
+      "title": "الاعدادات",
+      "logout": "تسجيل الخروج",
+      "english": "الانجليزيه",
+      "about": "نبذة عنا",
+      "report":"التبليغ عن مشكله"
+    },
   "hello": "مرحبا"
 }

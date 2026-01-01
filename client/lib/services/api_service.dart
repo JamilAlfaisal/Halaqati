@@ -124,6 +124,44 @@ class ApiService {
     }
   }
 
+  Future<void> logout(String token) async {
+    final url = Uri.parse('$_baseUrl/auth/logout');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 10));
+
+      // ✅ CHECK STATUS CODE FIRST!
+      if (response.statusCode == 401) {
+        // await _clearLocalData();
+        return;
+      }
+
+      // ✅ Only decode JSON if status is success
+      if (response.statusCode == 200) {
+        // await _clearLocalData();
+        print("Logout successful");
+      } else {
+        throw ApiException('Failed to logout', statusCode: response.statusCode);
+      }
+
+    } on SocketException {
+      print("Network error - no internet connection");
+      throw NetworkException();
+    } on NetworkException {
+      rethrow;
+    } catch (e) {
+      print("Unexpected error in logout: $e");
+      if (e is ApiException) rethrow;
+      throw ApiException('Unexpected error: $e');
+    }
+  }
+
   Future<bool> createClass({
     required String token,
     required String name,

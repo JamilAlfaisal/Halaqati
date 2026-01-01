@@ -65,7 +65,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
       appBar: AppbarWithLogo(text: "home_screen.halaqati".tr()),
       floatingActionButton: FloatingButtonIcon(
         onPressed: (){
-          Navigator.of(context).pushReplacementNamed("/add_halaqah_screen");
+          Navigator.of(context).pushNamed("/add_halaqah_screen");
         }, text:'home_screen.create'.tr()
       ),
       body: Padding(
