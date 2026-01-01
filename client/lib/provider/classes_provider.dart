@@ -89,3 +89,23 @@ class ClassesNotifier extends AsyncNotifier<List<HalaqaClass>?> {
     }
   }
 }
+
+final teacherStatsProvider = Provider((ref) {
+  final classesAsync = ref.watch(classesProvider);
+
+  return classesAsync.maybeWhen(
+    data: (classes) {
+      if (classes == null) return {'classCount': 0, 'studentCount': 0};
+
+      int classCount = classes.length;
+      // Sum up students across all classes
+      int studentCount = classes.fold(0, (sum, item) => sum + (item.studentCount));
+
+      return {
+        'classCount': classCount,
+        'studentCount': studentCount,
+      };
+    },
+    orElse: () => {'classCount': 0, 'studentCount': 0},
+  );
+});
