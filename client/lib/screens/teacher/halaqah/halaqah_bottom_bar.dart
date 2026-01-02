@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:halqati/models/halaqa_class.dart';
-import 'package:halqati/screens/teacher/halaqah/halaqah_screen.dart';
+import 'package:halqati/screens/teacher/halaqah/student_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:halqati/screens/teacher/halaqah/events_screen.dart';
+import 'package:halqati/screens/teacher/halaqah/halaqah_screen.dart';
 
 class HalaqahBottomBar extends StatefulWidget {
   const HalaqahBottomBar({super.key});
@@ -15,9 +16,10 @@ class _HalaqahBottomBarState extends State<HalaqahBottomBar> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as HalaqaClass;
+    // final args = ModalRoute.of(context)!.settings.arguments as HalaqaClass;
     final screen = [
-      HalaqahScreen(halaqah: args,),
+      HalaqahScreen(),
+      StudentScreen(),
       EventsScreen(),
     ];
     return Scaffold(
@@ -31,6 +33,10 @@ class _HalaqahBottomBarState extends State<HalaqahBottomBar> {
         },
 
         items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.sticky_note_2_outlined),
+            label: "halaqah_bottom_bar.halaqah".tr(),
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
             label: "halaqah_bottom_bar.students".tr(),

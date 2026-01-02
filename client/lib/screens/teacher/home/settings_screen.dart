@@ -38,31 +38,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("settings.logout".tr(), style: const TextStyle(fontSize: 16)),
-                    IconButton(
-                      icon: const Icon(Icons.logout),
-                      onPressed: () async {
-                        // 3. No casting needed! 'ref' is available globally in the class.
-                        if (mounted) {
-                          await AuthHelper.handleLogout(ref);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                height: 80,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Theme.of(context).primaryColor),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
                     Text("settings.english".tr(), style: const TextStyle(fontSize: 16)),
                     Switch(
                       // inactiveTrackColor: Theme.of(context).primaryColor,
@@ -129,6 +104,31 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       // and use it to show a SnackBar.
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }, icon: Icon(Icons.warning_amber),),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: double.infinity,
+                height: 80,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Theme.of(context).primaryColor),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("settings.logout".tr(), style: const TextStyle(fontSize: 16)),
+                    IconButton(
+                      icon: const Icon(Icons.logout),
+                      onPressed: () async {
+                        // 3. No casting needed! 'ref' is available globally in the class.
+                        if (mounted) {
+                          await AuthHelper.handleLogout(ref);
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
