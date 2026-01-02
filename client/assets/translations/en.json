@@ -70,13 +70,19 @@
     "Friday":"Friday",
     "Saturday":"Saturday",
     "Sunday":"Sunday",
-    "error":"Error creating new halaqah"
+    "error":"Error creating new halaqah",
+    "update":"Update"
   },
   "halaqah_bottom_bar":{
     "students":"Students",
-    "events":"events"
+    "events":"events",
+    "halaqah":"halaqah"
   },
   "halaqah_screen":{
+    "halaqah":{
+      "details":"Halaqah Details",
+      "":""
+    },
     "students":{
       "search":"Search Students",
       "total_pages":"Total pages memorized: ",

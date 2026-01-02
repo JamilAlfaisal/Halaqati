@@ -22,16 +22,16 @@ class HalaqaClass {
   });
 
   factory HalaqaClass.fromJson(Map<String, dynamic> json) {
-    // print(json["class"]);
+    // print(json);
     return HalaqaClass(
       id: json['id'] as int?,
       name: json['name'] as String?,
       description: json['description'] as String?,
       capacity: json['capacity'] as int?,
       roomNumber: json['room_number'] as String?,
-      time: json['time'] as String?,
-      days: json['days'] != null
-          ? List<String>.from(json['days'].map((x) => x.toString()))
+      time: json['schedule']['time'] as String?,
+      days: json['schedule']['days'] != null
+          ? List<String>.from(json['schedule']['days'].map((x) => x.toString()))
           : null,
       students: json['students'] != null
           ? List<Student>.from(

@@ -70,13 +70,19 @@
     "Friday":"الجمعة",
     "Saturday":"السبت",
     "Sunday":"الأحد",
-    "error":"حدث خطا ما"
+    "error":"حدث خطا ما",
+    "update":"تحديث"
   },
   "halaqah_bottom_bar":{
     "students":"التلاميذ",
-    "events":"الاحداث"
+    "events":"الاحداث",
+    "halaqah":"الحلقه"
   },
   "halaqah_screen":{
+    "halaqah":{
+      "details":"معلومات الحلقه",
+      "":""
+    },
     "students":{
       "search":"ابحث عن تلاميذ",
       "total_pages":"مجموع الصفحات المحفوظه",

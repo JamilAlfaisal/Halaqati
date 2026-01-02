@@ -282,6 +282,128 @@ class ApiService {
     }
   }
 
+  Future<HalaqaClass> getClass(String token, int id) async {
+    final url = Uri.parse('$_baseUrl/classes/$id');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      ).timeout(Duration(seconds: 10));
+
+      if(response.statusCode == 401){
+        throw UnauthorizedException();
+      }
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data != null) {
+          return HalaqaClass.fromJson(data['class']);
+        }
+        return new HalaqaClass(
+          id: 0,
+          name: "",
+        );
+      } else {
+        throw ApiException(
+          'Failed to fetch class details: ${response.statusCode}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on SocketException{
+      throw NetworkException();
+    } on TimeoutException {
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw ApiException('Unexpected error: $e');
+    }
+  }
+
+  Future<bool> updateClasses({
+    required String token,
+    required String name,
+    required String description,
+    required int capacity,
+    required String roomNumber,
+    required List<String> scheduleDays, // List of days
+    required String scheduleTime,       // Time string
+    required int id
+  }) async {
+    final url = Uri.parse(
+        '$_baseUrl/classes/$id'); // Assuming your endpoint is /api/classes
+
+    // 1. Construct the complete request body Map
+    final Map<String, dynamic> requestBody = {
+      "name": name,
+      "description": description,
+      "capacity": capacity,
+      "room_number": roomNumber,
+      "schedule": {
+        "days": scheduleDays,
+        "time": scheduleTime,
+      },
+    };
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          // 🚨 CRITICAL: Include the Bearer token in the Authorization header
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(requestBody), // Encode the whole Map to JSON
+      ).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 401) {
+        // print("Unauthorized - invalid token");
+        throw UnauthorizedException();
+      }
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        // ✅ Success: 201 Created is the standard for successful creation
+        print('Class updated successfully!');
+        return true;
+      }
+
+      if (response.statusCode == 422) {
+        throw ValidationException();
+      }
+
+      final responseBody =
+      response.body.isNotEmpty ? jsonDecode(response.body) : null;
+
+      throw ApiException(
+        responseBody['message'] ?? 'Failed to updated class',
+        statusCode: response.statusCode,
+      );
+    } on SocketException {
+      print("Network error - no internet connection");
+      throw NetworkException();
+    } on TimeoutException {
+      print("Network timeout");
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ValidationException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<Student>?> getStudentsByClass(String token, int classId)async{
     final url = Uri.parse('$_baseUrl/classes');
     try{

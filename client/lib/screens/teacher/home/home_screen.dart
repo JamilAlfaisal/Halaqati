@@ -131,8 +131,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware{
                     onTap: () {
                       Navigator.of(context).pushNamed(
                         '/halaqah_bottom_bar',
-                          arguments: halaqat[index]
                       );
+                      ref.read(selectedClassIdProvider.notifier).select(halaqat[index].id??0);
                     },
                     title: halaqat[index].name!,
                     studentNumber: halaqat[index].studentCount,

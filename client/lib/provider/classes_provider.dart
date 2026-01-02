@@ -46,7 +46,7 @@ class ClassesNotifier extends AsyncNotifier<List<HalaqaClass>?> {
 
   Future<void> createClass (
     {
-      required String name, // Replace with form controller values
+      required String name,
       String description = "",
       int capacity = 20,
       String roomNumber = "",
@@ -109,3 +109,82 @@ final teacherStatsProvider = Provider((ref) {
     orElse: () => {'classCount': 0, 'studentCount': 0},
   );
 });
+
+
+class SelectedClassIdNotifier extends Notifier<int?> {
+  @override
+  int? build() => null;
+
+  void select(int id) {
+    state = id;
+  }
+
+  void clear() {
+    state = null;
+  }
+}
+
+final selectedClassIdProvider = NotifierProvider<SelectedClassIdNotifier, int?>(
+  SelectedClassIdNotifier.new,
+);
+
+
+final classDetailsProvider =
+AsyncNotifierProvider<ClassDetailsNotifier, HalaqaClass?>(
+  ClassDetailsNotifier.new,
+);
+
+class ClassDetailsNotifier extends AsyncNotifier<HalaqaClass?> {
+  @override
+  Future<HalaqaClass?> build() async {
+    final classId = ref.watch(selectedClassIdProvider);
+    if (classId == null) return null;
+
+    final token = ref.watch(tokenProvider).value;
+    if (token == null) return null;
+
+    return ref.read(apiServiceProvider).getClass(token, classId);
+  }
+
+  Future<void> updateHalaqah(
+      {
+        required String name, // Replace with form controller values
+        String description = "",
+        int capacity = 20,
+        String roomNumber = "",
+        required List<String> scheduleDays,
+        required String scheduleTime
+      }
+      ) async {
+    state = const AsyncLoading();
+
+    state = await AsyncValue.guard(() async {
+
+      final classId = ref.read(selectedClassIdProvider);
+      if (classId == null) return null;
+
+      final token = ref.read(tokenProvider).value;
+      if (token == null) return null;
+      try{
+        await ref.read(apiServiceProvider).updateClasses(
+            token: token,
+            name: name,
+            description: description,
+            capacity: capacity,
+            roomNumber: roomNumber,
+            scheduleDays: scheduleDays,
+            scheduleTime: scheduleTime,
+            id: classId
+        );
+
+        return await ref.read(apiServiceProvider).getClass(token, classId);
+      }catch(e){
+        if (e is UnauthorizedException) {
+          print('Clearing token due to auth/API error');
+          await AuthHelper.handleLogout(ref);
+        }
+        rethrow;
+      }
+    });
+  }
+}
