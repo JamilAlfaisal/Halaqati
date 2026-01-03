@@ -9,6 +9,7 @@ import 'package:halqati/widgets/textfields/text_field_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:halqati/widgets/lists/student_list.dart';
 import 'package:halqati/widgets/buttons/floating_button_icon.dart';
+import 'package:halqati/provider/students_provider.dart';
 
 class StudentScreen extends ConsumerStatefulWidget {
   const StudentScreen({super.key});
@@ -73,6 +74,7 @@ class _HalaqahScreenState extends ConsumerState<StudentScreen> {
                                 name: searchedStudents[index].name ?? "Name not found",
                                 totalPagesMemorized: searchedStudents[index].memorizedPages?.length ?? 0,
                                 onTap: (){
+                                  ref.watch(selectedStudentIdProvider.notifier).select(searchedStudents[index].id??0);
                                   Navigator.of(context).pushNamed('/student_bottom_appbar');
                                 }
                             );
