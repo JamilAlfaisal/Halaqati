@@ -141,9 +141,11 @@
       "assignments": "الواجبات",
       "profile":{
         "profile":"معلومات التلميذ",
-
+        "memorized_pages":"الصفحات المحفوظة",
         "pages":"الصفحات",
-        "no_name": "لا يوجد اسم"
+        "no_name": "لا يوجد اسم",
+        "phone":"رقم الهاتف",
+        "no_phone":"لا يوجد رقم هاتف"
       },
       "assignment":{
         "assignment":"الواجبات"

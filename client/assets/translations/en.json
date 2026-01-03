@@ -141,7 +141,10 @@
       "assignments": "Assignments",
       "profile":{
         "profile":"Student Profile",
-         "pages":"Pages"
+        "memorized_pages":"Memorized Pages",
+         "pages":"Pages",
+         "phone":"Phone Number",
+         "no_phone":"Phone Number"
       },
       "assignment":{
         "assignment":"Assignments"

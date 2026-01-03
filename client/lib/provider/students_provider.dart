@@ -35,3 +35,21 @@ class StudentsNotifier extends AsyncNotifier<List<Student>?>{
     }
   }
 }
+
+
+class SelectedStudentIdNotifier extends Notifier<int?> {
+  @override
+  int? build() => null;
+
+  void select(int id) {
+    state = id;
+  }
+
+  void clear() {
+    state = null;
+  }
+}
+
+final selectedStudentIdProvider = NotifierProvider<SelectedStudentIdNotifier, int?>(
+  SelectedStudentIdNotifier.new,
+);
