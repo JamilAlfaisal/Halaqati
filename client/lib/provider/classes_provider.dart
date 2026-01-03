@@ -30,7 +30,7 @@ class ClassesNotifier extends AsyncNotifier<List<HalaqaClass>?> {
 
     try {
       print("try to get classes");
-      return await ref.read(apiServiceProvider).getClasses(token??"");
+      return await ref.read(apiServiceProvider).getClasses(token);
     } catch (e) {
       print("error catched $e");
       if (e is UnauthorizedException) {

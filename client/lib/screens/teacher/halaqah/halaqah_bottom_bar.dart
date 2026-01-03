@@ -13,7 +13,7 @@ class HalaqahBottomBar extends StatefulWidget {
 }
 
 class _HalaqahBottomBarState extends State<HalaqahBottomBar> {
-  int currentIndex = 0;
+  int currentIndex = 1;
   @override
   Widget build(BuildContext context) {
     // final args = ModalRoute.of(context)!.settings.arguments as HalaqaClass;
