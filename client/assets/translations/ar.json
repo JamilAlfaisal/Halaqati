@@ -136,5 +136,18 @@
       "about": "نبذة عنا",
       "report":"التبليغ عن مشكله"
     },
+    "student_bottom_appbar": {
+      "student_profile":"معلومات التلميذ",
+      "assignments": "الواجبات",
+      "profile":{
+        "profile":"معلومات التلميذ",
+
+        "pages":"الصفحات",
+        "no_name": "لا يوجد اسم"
+      },
+      "assignment":{
+        "assignment":"الواجبات"
+      }
+    },
   "hello": "مرحبا"
 }

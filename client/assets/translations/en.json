@@ -136,5 +136,16 @@
       "about": "About Us",
       "report":"Report Issues"
     },
+    "student_bottom_appbar": {
+      "student_profile":"Profile",
+      "assignments": "Assignments",
+      "profile":{
+        "profile":"Student Profile",
+         "pages":"Pages"
+      },
+      "assignment":{
+        "assignment":"Assignments"
+      }
+    },
   "hello": "Hello"
 }

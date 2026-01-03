@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/screens/teacher/halaqah/halaqah_bottom_bar.dart';
 import 'package:halqati/screens/students/home/dashboard_app_bar.dart';
 import 'package:halqati/screens/common_screens/root_screen.dart';
+import 'package:halqati/screens/teacher/student/student_bottom_appbar.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/add_halaqah_screen':(context) => const AddHalaqahScreen(),
         '/halaqah_bottom_bar':(context) => const HalaqahBottomBar(),
         '/dashboard_app_bar': (context) => const DashboardAppBar(),
+        '/student_bottom_appbar':(context) => const StudentBottomAppbar(),
         '/root_screen': (context) => const RootScreen(),
       },
     );

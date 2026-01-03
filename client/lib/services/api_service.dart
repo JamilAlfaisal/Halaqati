@@ -404,29 +404,73 @@ class ApiService {
     }
   }
 
-  Future<List<Student>?> getStudentsByClass(String token, int classId)async{
-    final url = Uri.parse('$_baseUrl/classes');
-    try{
-      print("getStudentsByClass");
+  Future<List<Student>> getStudents(String token) async {
+    final url = Uri.parse('$_baseUrl/teacher/students');
+
+    try {
       final response = await http.get(
         url,
         headers: {
-          'Authorization':'Bearer $token',
-          'Access':'application/json'
-        }
-      );
-      if(response.statusCode == 200){
-        final data = jsonDecode(response.body);
-        // print(data[classId]['class']['students']);
-        final studentsList = data[classId]['class']['students'] as List;
-        // print(studentsList);
-        return studentsList.map((json)=> Student.fromJson(json)).toList();
-      }else{
-        print("Fetch students Failed: ${response.statusCode}");
-        return null;
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      ).timeout(Duration(seconds: 10));
+
+      if(response.statusCode == 401){
+        throw UnauthorizedException();
       }
-    }catch(e){
-      print("Network Error: $e");
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data != null && data is List) {
+          return data.map((json) => Student.fromJson(json["student"])).toList();
+        }
+        return []; // Empty but valid response
+      } else {
+        throw ApiException(
+          'Failed to fetch Students: ${response.statusCode}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on SocketException{
+      throw NetworkException();
+    } on TimeoutException {
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      // if (e is ApiException) rethrow;
+      throw ApiException('Unexpected error: $e');
     }
   }
+
+//   Future<List<Student>?> getStudentsByClass(String token, int classId)async{
+//     final url = Uri.parse('$_baseUrl/classes');
+//     try{
+//       print("getStudentsByClass");
+//       final response = await http.get(
+//         url,
+//         headers: {
+//           'Authorization':'Bearer $token',
+//           'Access':'application/json'
+//         }
+//       );
+//       if(response.statusCode == 200){
+//         final data = jsonDecode(response.body);
+//         // print(data[classId]['class']['students']);
+//         final studentsList = data[classId]['class']['students'] as List;
+//         // print(studentsList);
+//         return studentsList.map((json)=> Student.fromJson(json)).toList();
+//       }else{
+//         print("Fetch students Failed: ${response.statusCode}");
+//         return null;
+//       }
+//     }catch(e){
+//       print("Network Error: $e");
+//     }
+//   }
 }
