@@ -108,7 +108,7 @@
         "title":"Dashboard"
       },
       "profile":{
-        "title":"Profile",
+        "profile":"Profile",
         "name":"Name",
         "email":"Email",
         "phone":"Phone Number"
@@ -147,7 +147,24 @@
          "no_phone":"Phone Number"
       },
       "assignment":{
-        "assignment":"Assignments"
+        "assignment":"Assignments",
+        "new_assignment":"New Assignment"
+      },
+      "add_halaqah_screen":{
+        "title":"Add Assignment",
+        "assignment_title":"Title",
+        "description":"Description",
+        "type":"Type",
+        "pages":"Pages",
+        "due_date":"Due Date",
+        "page_num_title":"Pages Numbers",
+        "page_num":"Type Page Number and Press ↵↵",
+        "date_hint":"Select Date",
+        "revision":"revision",
+        "memorization":"memorizing",
+        "reading":"reading",
+        "select_date": "Please Select Date",
+        "success":"You have successfully created new assignment"
       }
     },
   "hello": "Hello"

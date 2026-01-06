@@ -72,6 +72,7 @@ flutter:
      - assets/images/alhamidi_logo.png
      - assets/images/profile.png
      - assets/images/muz1.png
+     - assets/images/
      - assets/translations/
   #   - images/a_dot_ham.jpeg
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halqati/screens/teacher/home/home_screen.dart';
 import 'package:halqati/screens/teacher/home/profile_screen.dart';
-import 'package:halqati/screens/teacher/home/settings_screen.dart';
+import 'package:halqati/screens/common_screens/settings_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class HomeAppBar extends StatefulWidget {

@@ -41,7 +41,15 @@ class _HalaqahScreenState extends ConsumerState<StudentScreen> {
             }
             return RefreshIndicator(
               onRefresh: () async {
-                return ref.invalidate(studentsProvider);
+                final freshStudents = await ref.refresh(studentsProvider.future);
+
+                setState(() {
+                  if (freshStudents != null) {
+                    students = freshStudents.where((s) => s.classId == classId).toList();
+                    searchedStudents = students;
+                  }
+                  search.clear();
+                });
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
