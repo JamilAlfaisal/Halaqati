@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:halqati/core/exceptions/api_exceptions.dart';
+import 'package:halqati/models/assignment_class.dart';
 import 'package:http/http.dart' as http;
 import 'package:halqati/models/student.dart';
 import 'package:halqati/models/halaqa_class.dart';
@@ -12,7 +13,7 @@ class ApiService {
   // Android Emulator: 10.0.2.2
   // iOS Simulator: 127.0.0.1 (or localhost)
   // Physical Device (if on same network): Your PC's local IP (e.g., 192.168.1.10)
-  static const String _baseUrl = 'http://10.0.2.2:8000/api';
+  static const String _baseUrl = 'http://localhost:8000/api';
 
   Future <Map<String, dynamic>?> login(String phone, String pin) async {
     // print("this is the base url in the service page $_baseUrl");
@@ -429,6 +430,106 @@ class ApiService {
       } else {
         throw ApiException(
           'Failed to fetch Students: ${response.statusCode}',
+          statusCode: response.statusCode,
+        );
+      }
+    } on SocketException{
+      throw NetworkException();
+    } on TimeoutException {
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      // if (e is ApiException) rethrow;
+      throw ApiException('Unexpected error: $e');
+    }
+  }
+
+  Future<AssignmentClass> createAssignment (String token, AssignmentClass assignment)async{
+    final url = Uri.parse('$_baseUrl/assignments');
+    try{
+      final Map<String, dynamic> data = assignment.toJson();
+      final response = await http.post(
+        url,
+        headers:{
+          "Authorization":'Bearer $token',
+          "Content-Type": "application/json",
+          "Accept":"application/json"
+        },
+        body: jsonEncode(data),
+      ).timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 401) {
+        // print("Unauthorized - invalid token");
+        throw UnauthorizedException();
+      }
+
+      if (response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        if (data != null) {
+          return AssignmentClass.fromJson(data);
+        }
+        return AssignmentClass();
+      }
+
+      if (response.statusCode == 422) {
+        throw ValidationException();
+      }
+
+      final responseBody = jsonDecode(response.body);
+      throw ApiException(
+        responseBody['message'] ?? 'Failed to create assignment',
+        statusCode: response.statusCode,
+      );
+    } on SocketException {
+      print("Network error - no internet connection");
+      throw NetworkException();
+    } on TimeoutException {
+      print("Network timeout");
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ValidationException {
+      rethrow;
+    } catch (e) {
+      // print("Unexpected error in getProfile: $e");
+      // if (e is ApiException) rethrow;
+      // throw ApiException('Unexpected error: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<AssignmentClass>?> getAssignments(String token) async {
+    final url = Uri.parse('$_baseUrl/assignments');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      ).timeout(Duration(seconds: 10));
+
+      if(response.statusCode == 401){
+        throw UnauthorizedException();
+      }
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data != null && data is List) {
+          return data.map((json) => AssignmentClass.fromJson(json)).toList();
+        }
+        return []; // Empty but valid response
+      } else {
+        throw ApiException(
+          'Failed to fetch Assignment: ${response.statusCode}',
           statusCode: response.statusCode,
         );
       }

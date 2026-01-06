@@ -107,7 +107,7 @@
       "memorized_pages":"الصفحات المحفوظة",
       "title":"لوحة القيادة"
     },
-    "prfile":{
+    "profile":{
       "profile":"الملف الشخصي",
       "name":"الاسم",
       "email":"البريد الإلكتروني",
@@ -148,7 +148,25 @@
         "no_phone":"لا يوجد رقم هاتف"
       },
       "assignment":{
-        "assignment":"الواجبات"
+        "assignment":"الواجبات",
+        "new_assignment":"اضافه واجب"
+      },
+      "add_halaqah_screen":{
+        "title":"اضافه واجب",
+        "assignment_title":"العنوان",
+        "description":"الوصف",
+        "type":"النوع",
+        "pages":"الصفحات",
+        "due_date":"المهله الخيره",
+        "page_num_title":"أرقام الصفحات",
+        "page_num":"ادخل رقم الصفحه واضغط ↵↵",
+        "date_hint":"اختر تاريخ",
+        "revision":"مراجعه",
+        "memorization":"حفظ",
+        "reading":"قراءة",
+        "select_date": "من فضلك اختر تاريخ",
+        "success":"لقد نجحت في انشاء واجب جديد"
+  
       }
     },
   "hello": "مرحبا"
