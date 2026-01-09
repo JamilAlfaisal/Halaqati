@@ -166,8 +166,19 @@
         "reading":"قراءة",
         "select_date": "من فضلك اختر تاريخ",
         "success":"لقد نجحت في انشاء واجب جديد"
-  
       }
     },
+    "dashboard_screen":{
+      "no_halaqat": "لا يوجد حلقات",
+      "days":"الايام",
+      "time":"الوقت",
+      "location":"الموقع",
+      "student_count":"عدد التلاميذ",
+      "assignment_count":"عدد الوظائف",
+      "quran":"قرآن",
+      "more":"المزيد",
+      "read":"قراءة"
+    },
+  "not_defined":"غير معروف",
   "hello": "مرحبا"
 }

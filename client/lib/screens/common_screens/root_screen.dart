@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:halqati/provider/profile_provider.dart';
+import 'package:halqati/provider/teacher_providers/profile_provider.dart';
 import 'package:halqati/provider/token_notifier.dart';
 import 'package:halqati/screens/common_screens/login_screen.dart';
 import 'package:halqati/models/auth_user.dart';

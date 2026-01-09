@@ -5,7 +5,7 @@ import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/widgets/appbar/appbar_with_logo.dart';
 import 'package:halqati/widgets/lists/halaqat_list.dart';
 import 'package:halqati/widgets/buttons/floating_button_icon.dart';
-import 'package:halqati/provider/classes_provider.dart';
+import 'package:halqati/provider/teacher_providers/classes_provider.dart';
 import 'package:halqati/main.dart';
 import 'package:halqati/models/halaqa_class.dart';
 

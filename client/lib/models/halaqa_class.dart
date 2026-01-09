@@ -1,4 +1,6 @@
 import 'package:halqati/models/student.dart';
+import 'package:halqati/test/printJson.dart';
+
 
 class HalaqaClass {
   final int? id;
@@ -9,6 +11,7 @@ class HalaqaClass {
   final List<String>?  days;
   final String? time;
   final List<Student>? students;
+  final int? teacherId;
 
   HalaqaClass({
     required this.id,
@@ -18,11 +21,20 @@ class HalaqaClass {
     this.days,
     this.roomNumber,
     this.students,
-    this.time
+    this.time,
+    this.teacherId
   });
 
   factory HalaqaClass.fromJson(Map<String, dynamic> json) {
-    // print(json);
+    printJson(json['students'], 'halaqa_class from json');
+    print('id ${json['id']}');
+    // print(json['name']);
+    // print(json['description']);
+    // print(json['capacity']);
+    // print(json['room_number']);
+    // print(json['schedule']['time']);
+    // print(json['schedule']['days']);
+    // print(json['teacher_id']);
     return HalaqaClass(
       id: json['id'] as int?,
       name: json['name'] as String?,
@@ -30,12 +42,16 @@ class HalaqaClass {
       capacity: json['capacity'] as int?,
       roomNumber: json['room_number'] as String?,
       time: json['schedule']['time'] as String?,
+        teacherId: json['teacher_id'] as int?,
       days: json['schedule']['days'] != null
-          ? List<String>.from(json['schedule']['days'].map((x) => x.toString()))
-          : null,
+          ? (json['schedule']['days'] as List)
+          .map((item) => item.toString())
+          .toList() // This converts the Iterable back into a List<String>
+          : [],
+      // students: [],
       students: json['students'] != null
           ? List<Student>.from(
-          json['students'].map((x) => Student.fromJson(x as Map<String, dynamic>)))
+          (json['students'] as List).map((x) => Student.fromJson({'students':x})))
           : null,
     );
   }

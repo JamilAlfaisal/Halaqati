@@ -1,4 +1,7 @@
-
+import 'package:halqati/models/teacher.dart';
+import 'package:halqati/models/assignment_class.dart';
+import 'package:halqati/models/halaqa_class.dart';
+import 'package:halqati/test/printJson.dart';
 
 class Student{
   final int? id;
@@ -8,6 +11,10 @@ class Student{
   final String? dateOfBirth;
   final int? classId;
   final List<bool>? memorizedPages;
+  final Teacher? teacher;
+  final HalaqaClass? halaqaClass;
+  final List<AssignmentClass>? assignmentClass;
+
   // final int? studentCount;
 
   Student({
@@ -18,21 +25,59 @@ class Student{
     this.dateOfBirth,
     this.classId,
     this.memorizedPages,
+    this.halaqaClass,
+    this.assignmentClass,
+    this.teacher
     // this.studentCount
   });
 
+static Map<String, dynamic> findAliases(Map<String, dynamic>? json, List<String> aliases){
+  for (var key in aliases){
+    if(json != null && json[key] != null){
+      return json[key];
+    }
+  }
+  return {};
+}
+
   factory Student.fromJson(Map<String, dynamic> json) {
+    // print('student id: ${json}');
+    printJson(json, 'student class fromJson');
+    final data = findAliases(json, ['student', 'students']);
+    late final Teacher teacher;
+    late final HalaqaClass halaqaClass;
+    late final List<AssignmentClass>? assignmentClass;
+
+    if (data["teacher"] != null && data["teacher"]['user'] != null){
+      teacher = Teacher.fromJson(data["teacher"]["user"]);
+    }else{
+      teacher =  Teacher();
+    }
+
+    if (data["class"] != null){
+      halaqaClass = HalaqaClass.fromJson(data["class"]);
+    }else{
+      halaqaClass = HalaqaClass(id: 0,name: '');
+    }
+
+    if (json['recent_progress'] != null){
+      assignmentClass = List<AssignmentClass>.from(json['recent_progress'].map((x)=>AssignmentClass.fromJson(x['assignment'])));
+    }else{
+      assignmentClass = [];
+    }
     return Student(
-      id: json['id'] as int?,
-      name: json['name'] as String?,
-      email: json['email'] as String?,
-      phone: json['phone'] as String?,
-      dateOfBirth: json['date_of_birth'] as String?,
-      classId: json['class_id'] as int?,
-      // studentCount: json['student_count'] as int?,
-      memorizedPages: json['memorized_pages'] != null
-          ? List<bool>.from(json['memorized_pages'].map((x) => x as bool))
+      id: data['id'] as int?,
+      name: data['name'] as String?,
+      email: data['email'] as String?,
+      phone: data['phone'] as String?,
+      dateOfBirth: data['date_of_birth'] as String?,
+      classId: data['class_id'] as int?,
+      memorizedPages: data['memorized_pages'] != null
+          ? List<bool>.from(data['memorized_pages'].map((x) => x as bool))
           : null,
+      teacher: teacher,
+      halaqaClass: halaqaClass,
+      assignmentClass: assignmentClass,
     );
   }
 

@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/models/auth_user.dart';
 import 'package:halqati/models/student.dart';
 import 'package:halqati/models/teacher.dart';
-import 'package:halqati/provider/teacher_provider.dart';
-import 'package:halqati/provider/student_provider.dart';
+import 'package:halqati/provider/teacher_providers/teacher_provider.dart';
+import 'package:halqati/provider/teacher_providers/student_provider.dart';
 import 'package:halqati/core/exceptions/api_exceptions.dart';
 // lib/providers/auth_provider.dart
 

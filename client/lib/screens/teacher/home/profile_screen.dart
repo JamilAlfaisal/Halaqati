@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:halqati/models/halaqa_class.dart';
-import 'package:halqati/provider/classes_provider.dart';
+import 'package:halqati/provider/teacher_providers/classes_provider.dart';
 import 'package:halqati/widgets/appbar/appbar_with_logo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/models/teacher.dart';
-import 'package:halqati/provider/teacher_provider.dart';
+import 'package:halqati/provider/teacher_providers/teacher_provider.dart';
 import 'package:halqati/widgets/profile/teacher_profile.dart';
 import 'package:intl/intl.dart';
 

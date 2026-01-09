@@ -10,7 +10,7 @@ import 'package:halqati/widgets/textfields/num_text_field.dart';
 import 'package:halqati/widgets/textfields/text_area.dart';
 import 'package:halqati/widgets/textfields/text_field_normal.dart';
 import 'package:halqati/widgets/textfields/text_field_time.dart';
-import 'package:halqati/provider/classes_provider.dart';
+import 'package:halqati/provider/teacher_providers/classes_provider.dart';
 import 'package:halqati/models/halaqa_class.dart';
 
 class HalaqahScreen extends ConsumerStatefulWidget {
