@@ -32,11 +32,11 @@ class StudentProfileLeft extends StatelessWidget {
             ),
             Text(
               "ID: #${student.id.toString()}",
-              style: Theme.of(context).textTheme.labelSmall,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             Text(
-              "${"student_bottom_appbar.profile.pages".tr()}: ${student.memorizedPages?.length}/604",
-              style: Theme.of(context).textTheme.labelSmall,
+              "${"student_bottom_appbar.profile.pages".tr()}: ${student.memorizedPages?.length??0}/604",
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ],
         )
