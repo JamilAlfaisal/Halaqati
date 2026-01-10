@@ -147,6 +147,7 @@ class AppTheme {
 
       // Body text (can use primary, but often uses a slightly darker neutral color for readability,
       // here we stick to primary for consistency with your request for "big texts")
+      titleLarge: TextStyle(color: colorScheme.onPrimary, fontSize: 17, fontWeight: FontWeight.bold),
       bodyLarge: TextStyle(color: colorScheme.primary, fontSize: 17, fontWeight: FontWeight.bold),
       bodyMedium: TextStyle(color: colorScheme.primary, fontSize: 14),
 

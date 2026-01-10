@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/models/student.dart';
-import 'package:halqati/provider/classes_provider.dart';
-import 'package:halqati/provider/students_provider.dart';
+import 'package:halqati/provider/teacher_providers/classes_provider.dart';
+import 'package:halqati/provider/teacher_providers/students_provider.dart';
 import 'package:halqati/widgets/appbar/appbar_with_button.dart';
 import 'package:halqati/widgets/textfields/text_field_search.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:halqati/widgets/lists/student_list.dart';
 import 'package:halqati/widgets/buttons/floating_button_icon.dart';
-import 'package:halqati/provider/students_provider.dart';
+import 'package:halqati/provider/teacher_providers/students_provider.dart';
 
 class StudentScreen extends ConsumerStatefulWidget {
   const StudentScreen({super.key});

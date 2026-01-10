@@ -6,7 +6,7 @@ import 'package:halqati/models/assignment_class.dart';
 import 'package:http/http.dart' as http;
 import 'package:halqati/models/student.dart';
 import 'package:halqati/models/halaqa_class.dart';
-
+import 'package:halqati/test/printJson.dart';
 
 class ApiService {
   // 💡 IMPORTANT: Use the correct IP for your emulator/device
@@ -241,7 +241,7 @@ class ApiService {
 
   Future<List<HalaqaClass>> getClasses(String token) async {
     final url = Uri.parse('$_baseUrl/classes');
-
+    printString(token);
     try {
       final response = await http.get(
         url,
@@ -258,7 +258,11 @@ class ApiService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data != null && data is List) {
-          return data.map((json) => HalaqaClass.fromJson(json["class"])).toList();
+          return data.map((json)
+          {
+            return HalaqaClass.fromJson(json["class"]);
+          }
+          ).toList();
         }
         return []; // Empty but valid response
       } else {
@@ -421,10 +425,12 @@ class ApiService {
         throw UnauthorizedException();
       }
 
+      // printJson(jsonDecode(response.body), 'getStudent');
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data != null && data is List) {
-          return data.map((json) => Student.fromJson(json["student"])).toList();
+          return data.map((json) => Student.fromJson(json)).toList();
         }
         return []; // Empty but valid response
       } else {
@@ -548,6 +554,44 @@ class ApiService {
       throw ApiException('Unexpected error: $e');
     }
   }
+
+  Future<Student> getStudentDashboard (String token) async {
+    final url = Uri.parse('$_baseUrl/student/dashboard');
+    try{
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization':'Bearer $token',
+          'Access':'application/json'
+        }
+      ).timeout(Duration(seconds: 10));
+      printJson(response.body, "student dashboard");
+      print("getStudentDashboard: ${response.statusCode}");
+      if (response.statusCode == 401){
+        throw UnauthorizedException();
+      }
+      
+      if(response.statusCode == 200){
+        final data = jsonDecode(response.body);
+        return Student.fromJson(data);
+      }
+      return Student();
+
+      } on SocketException{
+        throw NetworkException();
+      } on TimeoutException {
+        throw NetworkException();
+      } on UnauthorizedException {
+        rethrow;
+      } on NetworkException {
+        rethrow;
+      } on ApiException {
+        rethrow;
+      } catch (e) {
+        // if (e is ApiException) rethrow;
+        throw ApiException('Unexpected error: $e');
+      }
+    }
 
 //   Future<List<Student>?> getStudentsByClass(String token, int classId)async{
 //     final url = Uri.parse('$_baseUrl/classes');

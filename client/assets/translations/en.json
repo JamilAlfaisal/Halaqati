@@ -167,5 +167,19 @@
         "success":"You have successfully created new assignment"
       }
     },
+  "dashboard_screen":{
+    "no_halaqat": "No Halaqat",
+    "no_assignments":"No Assignment",
+    "days":"Days",
+    "time":"Time",
+    "location":"Location",
+    "student_count":"Student Count",
+    "assignment_count":"Assignment Count",
+    "quran":"Quran",
+    "more":"More",
+    "read":"Read",
+    "halaqah_events":"Halaqah Events"
+  },
+  "not_defined":"Undefined",
   "hello": "Hello"
 }

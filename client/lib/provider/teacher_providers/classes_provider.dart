@@ -3,7 +3,7 @@ import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/core/utils/auth_utils.dart';
 import 'package:halqati/provider/api_service_provider.dart';
 import 'package:halqati/models/halaqa_class.dart';
-import 'package:halqati/provider/profile_provider.dart';
+import 'package:halqati/provider/teacher_providers/profile_provider.dart';
 import 'package:halqati/provider/token_notifier.dart';
 
 
