@@ -28,13 +28,13 @@ class EventsList extends StatelessWidget {
                   date,
                   style: Theme.of(context).textTheme.titleSmall,
                   overflow: TextOverflow.ellipsis,               // Better than clip
-                  maxLines: 2,
+                  // maxLines: 2,
                 ),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.bodyLarge,
                   overflow: TextOverflow.ellipsis,               // Better than clip
-                  maxLines: 2,
+                  // maxLines: 2,
                 ),
                 Text(
                   description,

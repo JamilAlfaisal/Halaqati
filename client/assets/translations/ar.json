@@ -181,6 +181,15 @@
       "read":"قراءة",
       "halaqah_events":"أحداث الحلقه"
     },
+    "student_profile_screen":{
+      "eamil_details":"معلومات المستخدم",
+      "un_defined":"غير معرف",
+      "password":"كلمة المرور",
+      "email":"البريد الإلكتروني",
+      "phone":"رقم الهاتف",
+      "memorized_pages":"الصفحات المحفوظة",
+      "dob":"تاريخ الميلاد"
+    },
   "not_defined":"غير معروف",
   "hello": "مرحبا"
 }

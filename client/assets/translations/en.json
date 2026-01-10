@@ -180,6 +180,16 @@
     "read":"Read",
     "halaqah_events":"Halaqah Events"
   },
+  "student_profile_screen":{
+    "eamil_details":"User Details",
+    "un_defined":"Undefined",
+    "password":"Password",
+    "email":"Email",
+    "phone":"Phone Number",
+    "memorized_pages":"Memorized Pages",
+    "dob":"Date Of Birth",
+    "":""
+  },
   "not_defined":"Undefined",
   "hello": "Hello"
 }

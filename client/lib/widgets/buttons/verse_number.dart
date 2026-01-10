@@ -29,7 +29,7 @@ class VerseNumber extends StatelessWidget {
             ),
           ),
         ),
-        child: Text("$num"),
+        child: Text(num),
       ),
     );
   }
