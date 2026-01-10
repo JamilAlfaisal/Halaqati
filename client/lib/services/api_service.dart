@@ -566,7 +566,7 @@ class ApiService {
         }
       ).timeout(Duration(seconds: 10));
       printJson(response.body, "student dashboard");
-      
+      print("getStudentDashboard: ${response.statusCode}");
       if (response.statusCode == 401){
         throw UnauthorizedException();
       }

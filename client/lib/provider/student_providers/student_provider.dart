@@ -19,14 +19,13 @@ class AuthNotifier extends AsyncNotifier<Student?> {
     if (tokenAsync.isLoading) return null;
 
     final token = tokenAsync.value;
-    print("profile provider token value $token");
+    // print("profile provider token value $token");
     if (token == null || token.isEmpty) return null;
 
     try {
       return await ref.read(apiServiceProvider).getStudentDashboard(token);
 
     } catch (e) {
-      print('Error in AuthNotifier: $e');
       if (e is UnauthorizedException) {
         print('Clearing token due to auth/API error');
         await AuthHelper.handleLogout(ref);
