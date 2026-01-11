@@ -190,6 +190,16 @@
       "memorized_pages":"الصفحات المحفوظة",
       "dob":"تاريخ الميلاد"
     },
+    "halaqah_details_screen":{
+      "halaqah_details":"معلومات الحلقه",
+      "error_loading":"حدث خطا اثناء التحميل",
+      "capacity":"السعه",
+      "halaqah_info":"معلومات الحلقه",
+      "location":"الموقع",
+      "time":"الوقت",
+      "weekly_schedule":"الجدول الاسبوعي",
+      "teacher_details":"معلومات الشيخ"
+    },
   "not_defined":"غير معروف",
   "hello": "مرحبا"
 }

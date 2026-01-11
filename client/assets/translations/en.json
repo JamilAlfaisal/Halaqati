@@ -190,6 +190,16 @@
     "dob":"Date Of Birth",
     "":""
   },
+  "halaqah_details_screen":{
+    "halaqah_details":"Halaqah Details",
+    "error_loading":"Error While Loading",
+    "capacity":"Capacity",
+    "halaqah_info":"Halaqah Information",
+    "location":"Location",
+    "time":"Time",
+    "weekly_schedule":"Weekly Schedule",
+    "teacher_details":"Teacher Details"
+  },
   "not_defined":"Undefined",
   "hello": "Hello"
 }

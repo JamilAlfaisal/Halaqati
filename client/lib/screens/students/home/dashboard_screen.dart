@@ -101,10 +101,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                 ),
                               ],
                             ),
-                            ElevatedDark(onPressed: (){}, text: 'dashboard_screen.more'.tr()),
+                            ElevatedDark(onPressed: (){
+                              Navigator.of(context).pushNamed('/halaqa_details_screen');
+                            }, text: 'dashboard_screen.more'.tr()),
                           ],
                         ),
-
                         Container(
                           height: 200,
                           margin: EdgeInsets.only(top: 10),
