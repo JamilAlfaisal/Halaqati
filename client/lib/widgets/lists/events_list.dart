@@ -17,54 +17,66 @@ class EventsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  date,
-                  style: Theme.of(context).textTheme.titleSmall,
-                  overflow: TextOverflow.ellipsis,               // Better than clip
-                  // maxLines: 2,
-                ),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  overflow: TextOverflow.ellipsis,               // Better than clip
-                  // maxLines: 2,
-                ),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.titleSmall,
-                  overflow: TextOverflow.ellipsis,               // Better than clip
-                  maxLines: 2,
-                ),
-                // Divider(
-                //   color: Theme.of(context).colorScheme.secondaryContainer,
-                //   height: 20, // Specifies the total height of the divider area
-                //   thickness: 2, // Specifies the thickness (height) of the line itself
-                //   indent: 10, // Indentation (empty space) at the start of the divider
-                //   endIndent: 10, // Indentation (empty space) at the end of the divider
-                // ),
-              ],
+      child: Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    date,
+                    style: Theme.of(context).textTheme.titleSmall,
+                    overflow: TextOverflow.ellipsis,               // Better than clip
+                    // maxLines: 2,
+                  ),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    overflow: TextOverflow.ellipsis,               // Better than clip
+                    // maxLines: 2,
+                  ),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.titleSmall,
+                    overflow: TextOverflow.ellipsis,               // Better than clip
+                    maxLines: 2,
+                  ),
+                  // Divider(
+                  //   color: Theme.of(context).colorScheme.secondaryContainer,
+                  //   height: 20, // Specifies the total height of the divider area
+                  //   thickness: 2, // Specifies the thickness (height) of the line itself
+                  //   indent: 10, // Indentation (empty space) at the start of the divider
+                  //   endIndent: 10, // Indentation (empty space) at the end of the divider
+                  // ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: 100,
-            width: 130,
-            // clipBehavior: Clip.antiAlias,
-            // decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.all(Radius.circular(16))
+            Icon(Icons.arrow_forward_rounded)
+            // Container(
+            //   height: 100,
+            //   width: 130,
+            //   // clipBehavior: Clip.antiAlias,
+            //   // decoration: BoxDecoration(
+            //   //     borderRadius: BorderRadius.all(Radius.circular(16))
+            //   // ),
+            //   child: Image.asset(
+            //     'assets/images/read.png',
+            //     fit: BoxFit.fill,
+            //   ),
             // ),
-            child: Image.asset(
-              'assets/images/read.png',
-              fit: BoxFit.fill,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

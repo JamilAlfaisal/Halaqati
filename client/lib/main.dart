@@ -13,7 +13,7 @@ import 'package:halqati/screens/students/home/dashboard_app_bar.dart';
 import 'package:halqati/screens/common_screens/root_screen.dart';
 import 'package:halqati/screens/teacher/student/student_bottom_appbar.dart';
 import 'package:halqati/screens/teacher/student/add_assignment_screen.dart';
-
+import 'package:halqati/screens/students/halaqa_details_screen.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
         '/dashboard_app_bar': (context) => const DashboardAppBar(),
         '/student_bottom_appbar':(context) => const StudentBottomAppbar(),
         '/add_assignment_screen':(context) => const AddAssignmentScreen(),
+        '/halaqa_details_screen':(context) => const HalaqaDetailsScreen(),
         '/root_screen': (context) => const RootScreen(),
       },
     );
