@@ -17,23 +17,35 @@ class QuranClassController extends Controller
     {
         $user = $request->user();
 
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         $query = QuranClass::with(['teacher.user', 'students'])
             ->where('is_active', true);
 
         // Filter by teacher if user is a teacher
         if ($user instanceof \App\Models\User && $user->isTeacher()) {
-            $query->where('teacher_id', $user->teacher->id);
+            $teacher = $user->teacher;
+            if (!$teacher) {
+                return response()->json(['error' => 'Teacher profile not found'], 404);
+            }
+            $query->where('teacher_id', $teacher->id);
         }
 
-        $classes = $query->get()->map(function ($class) {
-            return [
-                'class' => $class,
-                'student_count' => $class->getStudentCount(),
-                'has_capacity' => $class->hasCapacity(),
-            ];
-        });
+        try {
+            $classes = $query->get()->map(function ($class) {
+                return [
+                    'class' => $class,
+                    'student_count' => $class->getStudentCount(),
+                    'has_capacity' => $class->hasCapacity(),
+                ];
+            });
 
-        return response()->json($classes);
+            return response()->json($classes);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve class data'], 500);
+        }
     }
 
     /**
@@ -79,20 +91,24 @@ class QuranClassController extends Controller
      */
     public function show(QuranClass $quranClass): JsonResponse
     {
-        $quranClass->load(['teacher.user', 'students.user', 'assignments']);
+        try {
+            $quranClass->load(['teacher.user', 'students', 'assignments']);
 
-        $data = [
-            'class' => $quranClass,
-            'student_count' => $quranClass->getStudentCount(),
-            'has_capacity' => $quranClass->hasCapacity(),
-            'recent_assignments' => $quranClass->assignments()
-                ->with('assignmentCompletions')
-                ->latest()
-                ->limit(10)
-                ->get(),
-        ];
+            $data = [
+                'class' => $quranClass,
+                'student_count' => $quranClass->getStudentCount(),
+                'has_capacity' => $quranClass->hasCapacity(),
+                'recent_assignments' => $quranClass->assignments()
+                    ->with('assignmentCompletions')
+                    ->latest()
+                    ->limit(10)
+                    ->get(),
+            ];
 
-        return response()->json($data);
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve class data'], 500);
+        }
     }
 
     /**

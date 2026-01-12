@@ -16,6 +16,10 @@ class TeacherController extends Controller
     {
         $user = $request->user();
 
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$user instanceof \App\Models\User || !$user->isTeacher()) {
             return response()->json(['error' => 'Teacher access required'], 403);
         }
@@ -28,24 +32,32 @@ class TeacherController extends Controller
 
         $weekNumber = $request->get('week', now()->weekOfYear);
 
-        $data = [
-            'teacher' => $teacher->load('user'),
-            'stats' => [
-                'total_students' => $teacher->getTotalStudentsCount(),
-                'total_classes' => $teacher->activeClasses()->count(),
-                'weekly_assignments' => $teacher->getWeeklyAssignments($weekNumber)->count(),
-            ],
-            'recent_students' => $teacher->activeStudents()->with('user')->limit(10)->get(),
-            'active_classes' => $teacher->activeClasses()->with('students')->get(),
-            'weekly_assignments' => $teacher->getWeeklyAssignments($weekNumber)->with(['student.user', 'class', 'assignmentCompletions'])->get(),
-        ];
+        try {
+            $data = [
+                'teacher' => $teacher->load('user'),
+                'stats' => [
+                    'total_students' => $teacher->getTotalStudentsCount(),
+                    'total_classes' => $teacher->activeClasses()->count(),
+                    'weekly_assignments' => $teacher->getWeeklyAssignments($weekNumber)->count(),
+                ],
+                'recent_students' => $teacher->activeStudents()->limit(10)->get(),
+                'active_classes' => $teacher->activeClasses()->with('students')->get(),
+                'weekly_assignments' => $teacher->getWeeklyAssignments($weekNumber)->with(['student', 'class', 'assignmentCompletions'])->get(),
+            ];
 
-        return response()->json($data);
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve dashboard data'], 500);
+        };
     }
 
     public function students(Request $request): JsonResponse
     {
         $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
 
         if (!$user instanceof \App\Models\User || !$user->isTeacher()) {
             return response()->json(['error' => 'Teacher access required'], 403);
@@ -57,35 +69,47 @@ class TeacherController extends Controller
             return response()->json(['error' => 'Teacher profile not found'], 404);
         }
 
-        $students = $teacher->activeStudents()
-            ->with(['class', 'assignmentCompletions'])
-            ->get();
+        try {
+            $students = $teacher->activeStudents()
+                ->with(['class', 'assignmentCompletions'])
+                ->get();
 
-        // Add completion rate for each student
-        $studentsWithProgress = $students->map(function ($student) {
-            return [
-                'student' => $student,
-                'completion_rate' => $student->getCompletionRate(),
-                'recent_assignments' => $student->assignmentCompletions()
-                    ->with('assignment')
-                    ->latest()
-                    ->limit(5)
-                    ->get()
-            ];
-        });
+            // Add completion rate for each student
+            $studentsWithProgress = $students->map(function ($student) {
+                return [
+                    'student' => $student,
+                    'completion_rate' => $student->getCompletionRate(),
+                    'recent_assignments' => $student->assignmentCompletions()
+                        ->with('assignment')
+                        ->latest()
+                        ->limit(5)
+                        ->get()
+                ];
+            });
 
-        return response()->json($studentsWithProgress);
+            return response()->json($studentsWithProgress);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve students data'], 500);
+        }
     }
 
     public function studentProgress(Request $request, Student $student): JsonResponse
     {
         $user = $request->user();
 
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$user instanceof \App\Models\User || !$user->isTeacher()) {
             return response()->json(['error' => 'Teacher access required'], 403);
         }
 
         $teacher = $user->teacher;
+
+        if (!$teacher) {
+            return response()->json(['error' => 'Teacher profile not found'], 404);
+        }
 
         // Ensure the student belongs to this teacher
         if ($student->teacher_id !== $teacher->id) {
@@ -107,6 +131,10 @@ class TeacherController extends Controller
     public function classes(Request $request): JsonResponse
     {
         $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
 
         if (!$user instanceof \App\Models\User || !$user->isTeacher()) {
             return response()->json(['error' => 'Teacher access required'], 403);
@@ -136,11 +164,19 @@ class TeacherController extends Controller
     {
         $user = $request->user();
 
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$user instanceof \App\Models\User || !$user->isTeacher()) {
             return response()->json(['error' => 'Teacher access required'], 403);
         }
 
         $teacher = $user->teacher;
+
+        if (!$teacher) {
+            return response()->json(['error' => 'Teacher profile not found'], 404);
+        }
 
         // Ensure the class belongs to this teacher
         if ($class->teacher_id !== $teacher->id) {

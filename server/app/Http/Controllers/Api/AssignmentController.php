@@ -19,23 +19,29 @@ class AssignmentController extends Controller
     {
         $user = $request->user();
 
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         $query = Assignment::with(['teacher.user', 'student.user', 'class', 'assignmentCompletions'])
             ->where('is_active', true);
 
         // Filter by teacher if user is a teacher
-        if ($user->isTeacher()) {
-            $query->where('teacher_id', $user->teacher->id);
+        if ($user instanceof \App\Models\User && $user->isTeacher()) {
+            $teacher = $user->teacher;
+            if (!$teacher) {
+                return response()->json(['error' => 'Teacher profile not found'], 404);
+            }
+            $query->where('teacher_id', $teacher->id);
         }
-
         // Filter by student if user is a student
-        if ($user instanceof \App\Models\Student) {
+        elseif ($user instanceof \App\Models\Student) {
             $query->where(function ($q) use ($user) {
                 $q->where('student_id', $user->id)
                     ->orWhere('class_id', $user->class_id);
             });
-        } elseif ($user instanceof \App\Models\User && $user->isStudent()) {
-            // This case should not happen anymore since students don't have User records
-            return response()->json(['error' => 'Invalid access'], 403);
+        } else {
+            return response()->json(['error' => 'Invalid user type'], 403);
         }
 
         // Additional filters

@@ -64,35 +64,52 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        try {
+            $user = $request->user();
+            if ($user && $user->currentAccessToken()) {
+                $user->currentAccessToken()->delete();
+            }
 
-        return response()->json([
-            'message' => 'Logged out successfully'
-        ]);
+            return response()->json([
+                'message' => 'Logged out successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Logged out successfully'
+            ]);
+        }
     }
 
     public function me(Request $request): JsonResponse
     {
         $authenticatable = $request->user();
 
-        if ($authenticatable instanceof User) {
-            $userData = $authenticatable->load($authenticatable->isTeacher() ? 'teacher' : []);
-            return response()->json([
-                'user' => $userData,
-                'user_type' => 'user',
-                'role' => $authenticatable->role
-            ]);
+        if (!$authenticatable) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
         }
 
-        if ($authenticatable instanceof Student) {
-            $studentData = $authenticatable->load(['teacher.user', 'class']);
-            return response()->json([
-                'user' => $studentData,
-                'user_type' => 'student',
-                'role' => 'student'
-            ]);
-        }
+        try {
+            if ($authenticatable instanceof User) {
+                $userData = $authenticatable->load($authenticatable->isTeacher() ? 'teacher' : []);
+                return response()->json([
+                    'user' => $userData,
+                    'user_type' => 'user',
+                    'role' => $authenticatable->role
+                ]);
+            }
 
-        return response()->json(['error' => 'Invalid user type'], 400);
+            if ($authenticatable instanceof Student) {
+                $studentData = $authenticatable->load(['teacher.user', 'class']);
+                return response()->json([
+                    'user' => $studentData,
+                    'user_type' => 'student',
+                    'role' => 'student'
+                ]);
+            }
+
+            return response()->json(['error' => 'Invalid user type'], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Authentication error', 'message' => 'Unable to retrieve user data'], 500);
+        }
     }
 }

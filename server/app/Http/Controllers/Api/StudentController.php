@@ -15,37 +15,49 @@ class StudentController extends Controller
     {
         $student = $request->user();
 
+        if (!$student) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$student instanceof \App\Models\Student) {
-            return response()->json(['error' => 'Student profile not found'], 404);
+            return response()->json(['error' => 'Student access required'], 403);
         }
 
         $weekNumber = $request->get('week', now()->weekOfYear);
 
-        $data = [
-            'student' => $student->load(['teacher.user', 'class']),
-            'stats' => [
-                'completion_rate' => $student->getCompletionRate(),
-                'total_assignments' => $student->assignmentCompletions()->count(),
-                'completed_assignments' => $student->assignmentCompletions()->where('is_completed', true)->count(),
-                'pending_assignments' => $student->assignmentCompletions()->where('is_completed', false)->count(),
-            ],
-            'weekly_assignments' => $student->getWeeklyAssignments($weekNumber),
-            'recent_progress' => $student->assignmentCompletions()
-                ->with('assignment')
-                ->latest()
-                ->limit(10)
-                ->get(),
-        ];
+        try {
+            $data = [
+                'student' => $student->load(['teacher.user', 'class']),
+                'stats' => [
+                    'completion_rate' => $student->getCompletionRate(),
+                    'total_assignments' => $student->assignmentCompletions()->count(),
+                    'completed_assignments' => $student->assignmentCompletions()->where('is_completed', true)->count(),
+                    'pending_assignments' => $student->assignmentCompletions()->where('is_completed', false)->count(),
+                ],
+                'weekly_assignments' => $student->getWeeklyAssignments($weekNumber),
+                'recent_progress' => $student->assignmentCompletions()
+                    ->with('assignment')
+                    ->latest()
+                    ->limit(10)
+                    ->get(),
+            ];
 
-        return response()->json($data);
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve dashboard data'], 500);
+        }
     }
 
     public function assignments(Request $request): JsonResponse
     {
         $student = $request->user();
 
+        if (!$student) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$student instanceof \App\Models\Student) {
-            return response()->json(['error' => 'Student profile not found'], 404);
+            return response()->json(['error' => 'Student access required'], 403);
         }
 
         $weekNumber = $request->get('week');
@@ -87,8 +99,12 @@ class StudentController extends Controller
     {
         $student = $request->user();
 
+        if (!$student) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$student instanceof \App\Models\Student) {
-            return response()->json(['error' => 'Student profile not found'], 404);
+            return response()->json(['error' => 'Student access required'], 403);
         }
 
         // Check if assignment belongs to student
@@ -126,8 +142,12 @@ class StudentController extends Controller
     {
         $student = $request->user();
 
+        if (!$student) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$student instanceof \App\Models\Student) {
-            return response()->json(['error' => 'Student profile not found'], 404);
+            return response()->json(['error' => 'Student access required'], 403);
         }
 
         // Check if assignment belongs to student
@@ -162,8 +182,12 @@ class StudentController extends Controller
     {
         $student = $request->user();
 
+        if (!$student) {
+            return response()->json(['error' => 'Unauthenticated', 'message' => 'Token expired or invalid'], 401);
+        }
+
         if (!$student instanceof \App\Models\Student) {
-            return response()->json(['error' => 'Student profile not found'], 404);
+            return response()->json(['error' => 'Student access required'], 403);
         }
 
         $history = $student->getProgressHistory();
