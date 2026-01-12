@@ -18,7 +18,6 @@ class HalaqaDetailsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncStudentDashboard = ref.watch(studentDashboard);
-
     return Scaffold(
       appBar: AppbarWithButton(
         text: 'halaqah_details_screen.halaqah_details'.tr(),

@@ -200,6 +200,16 @@
     "weekly_schedule":"Weekly Schedule",
     "teacher_details":"Teacher Details"
   },
+  "event_details_screen":{
+    "event_details":"Events Details",
+    "pending":"Pending",
+    "done":"Done",
+    "type":"Task Type",
+    "date":"Due Date",
+    "teacher_instructions":"Teacher Instructions",
+    "pages":"Assigned Pages",
+    "mark_as_complete":"Mark as Complete"
+  },
   "not_defined":"Undefined",
   "hello": "Hello"
 }

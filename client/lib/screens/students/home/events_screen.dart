@@ -4,6 +4,7 @@ import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/models/assignment_class.dart';
 import 'package:halqati/models/halaqa_class.dart';
 import 'package:halqati/models/teacher.dart';
+import 'package:halqati/provider/student_providers/selected_assignment_notifier.dart';
 import 'package:halqati/provider/student_providers/student_provider.dart';
 import 'package:halqati/widgets/appbar/appbar_with_logo.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -29,7 +30,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
   @override
   Widget build(BuildContext context) {
     final asyncStudentDashboard = ref.watch(studentDashboard);
-
+    final selectAssignment = ref.watch(selectedAssignmentProvider.notifier);
     return Scaffold(
       appBar: AppbarWithLogo(text: "student_app_bar.events.title".tr()),
       body: Padding(
@@ -108,12 +109,19 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                       padding: EdgeInsets.symmetric(vertical: 10),
                       itemCount: assignmentClass.length,
                       itemBuilder: (context, index){
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: EventsList(
-                            title: assignmentClass[index].title??"",
-                            date: displayDate(assignmentClass[index].dueDate),
-                            description: assignmentClass[index].description??""
+                        return GestureDetector(
+                          onTap: (){
+                            selectAssignment.select(assignmentClass[index].id??0);
+                            Navigator.of(context).pushNamed("/event_details_screen");
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: EventsList(
+                              title: assignmentClass[index].title??"",
+                              date: displayDate(assignmentClass[index].dueDate),
+                              description: assignmentClass[index].description??"",
+                              isComplete: assignmentClass[index].isCompleted??false,
+                            ),
                           ),
                         );
                       },

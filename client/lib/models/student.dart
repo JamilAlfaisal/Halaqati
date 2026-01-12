@@ -42,8 +42,8 @@ static Map<String, dynamic> findAliases(Map<String, dynamic>? json, List<String>
 
   factory Student.fromJson(Map<String, dynamic> json) {
     // print('student id: ${json}');
-    printJson(json, 'student class fromJson');
     final data = findAliases(json, ['student', 'students']);
+    printJson(json, 'student class fromJson');
     late final Teacher teacher;
     late final HalaqaClass halaqaClass;
     late final List<AssignmentClass>? assignmentClass;
@@ -61,7 +61,8 @@ static Map<String, dynamic> findAliases(Map<String, dynamic>? json, List<String>
     }
 
     if (json['recent_progress'] != null){
-      assignmentClass = List<AssignmentClass>.from(json['recent_progress'].map((x)=>AssignmentClass.fromJson(x['assignment'])));
+      assignmentClass = List<AssignmentClass>.from(json['recent_progress'].map((x)=>AssignmentClass.fromJson(
+          {...x['assignment'],"is_completed":x['is_completed']})));
     }else{
       assignmentClass = [];
     }
@@ -73,8 +74,8 @@ static Map<String, dynamic> findAliases(Map<String, dynamic>? json, List<String>
       dateOfBirth: data['date_of_birth'] as String?,
       classId: data['class_id'] as int?,
       memorizedPages: data['memorized_pages'] != null
-          ? List<bool>.from(data['memorized_pages'].map((x) => x as bool))
-          : null,
+        ? List<bool>.from(data['memorized_pages'].map((x) => x as bool))
+        : null,
       teacher: teacher,
       halaqaClass: halaqaClass,
       assignmentClass: assignmentClass,

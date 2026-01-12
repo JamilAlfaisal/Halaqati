@@ -1,6 +1,6 @@
 
 import 'package:intl/intl.dart';
-
+import 'package:halqati/test/printJson.dart';
 
 class AssignmentClass{
   final int? id;
@@ -39,6 +39,7 @@ class AssignmentClass{
       dueDate: json['due_date'] as String?,
       classId: json['class_id'] as int?,
       studentId: json['student_id'] as int?,
+      isCompleted: json['is_completed'],
       pages: json['pages'] != null
           ? List<int>.from(json['pages'].map((x) => x as int))
           : null,
