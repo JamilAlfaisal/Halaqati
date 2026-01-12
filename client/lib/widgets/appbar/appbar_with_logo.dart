@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AppbarWithLogo extends StatelessWidget implements PreferredSizeWidget {
   final String text;
@@ -8,7 +9,9 @@ class AppbarWithLogo extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: Padding(
-        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+        padding: context.locale.languageCode == 'en'
+            ?const EdgeInsets.fromLTRB(5, 0, 0, 0)
+            :const EdgeInsets.fromLTRB(0, 0, 5, 0),
         child: Image.asset('assets/images/alhamidi_logo.png'),
       ),
       centerTitle: true,

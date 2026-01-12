@@ -8,8 +8,8 @@ plugins {
 android {
     namespace = "com.example.halqati"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
-
+//    ndkVersion = flutter.ndkVersion
+    ndkVersion = "28.0.12916984"
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

@@ -9,7 +9,7 @@ class DeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: ()=>onPressed(),
-      icon: Icon(FontAwesomeIcons.trashCan, color: Colors.red,),
+      icon: Icon(FontAwesomeIcons.trashCan, color: Colors.red, size: 24,),
     );
   }
 }

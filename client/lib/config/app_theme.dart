@@ -36,6 +36,22 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.backgroundWhite,
       fontFamily: 'Inter', // A modern, readable default font (or pick your own)
 
+      iconTheme: const IconThemeData(
+        color: AppColors.primaryBlue, // Set your specific color here
+        size: 30.0,              // Optionally set a global size
+        opacity: 0.9,
+      ),
+
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColors.backgroundWhite, // Background of the bar itself
+        selectedItemColor: AppColors.primaryBlue, // Color of the active icon/label
+        unselectedItemColor: AppColors.accentCyan, // Color of inactive icons/labels
+        elevation: 8, // Shadow under the bar
+        type: BottomNavigationBarType.fixed, // Use 'shifting' for a different style
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+      ),
+
       // Global theme for all InputDecorations (used by TextFormField)
       inputDecorationTheme: const InputDecorationTheme(
         // Default label text style
@@ -52,8 +68,18 @@ class AppTheme {
           borderRadius: BorderRadius.all(Radius.circular(12)),
           borderSide: BorderSide(color: AppColors.primaryBlue, width: 3.0), // A dramatic change for demonstration
         ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: AppColors.primaryBlue, width: 3.0), // A dramatic change for demonstration
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: AppColors.primaryBlue, width: 3.0), // A dramatic change for demonstration
+        ),
         // Optional: Default hint style
-        hintStyle: TextStyle(color: AppColors.accentCyan ),
+        hintStyle: TextStyle(color: AppColors.accentCyan, fontSize: 14),
         suffixIconColor: AppColors.primaryBlue,
         prefixIconColor: AppColors.primaryBlue,
         // Optional: Padding
@@ -121,7 +147,8 @@ class AppTheme {
 
       // Body text (can use primary, but often uses a slightly darker neutral color for readability,
       // here we stick to primary for consistency with your request for "big texts")
-      bodyLarge: TextStyle(color: colorScheme.primary, fontSize: 16, fontWeight: FontWeight.bold),
+      titleLarge: TextStyle(color: colorScheme.onPrimary, fontSize: 17, fontWeight: FontWeight.bold),
+      bodyLarge: TextStyle(color: colorScheme.primary, fontSize: 17, fontWeight: FontWeight.bold),
       bodyMedium: TextStyle(color: colorScheme.primary, fontSize: 14),
 
       // Hint and Caption text (use accentCyan)
