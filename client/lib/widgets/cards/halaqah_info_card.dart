@@ -15,7 +15,7 @@ class HalaqahInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300, // Adjust width as needed
+      width: double.infinity, // Adjust width as needed
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,

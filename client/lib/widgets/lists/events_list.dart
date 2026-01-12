@@ -1,15 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class EventsList extends StatelessWidget {
   final String date;
   final String title;
   final String description;
+  final bool isComplete;
   final void Function()? onTap;
   const EventsList({
     super.key,
     required this.title,
     required this.date,
     required this.description,
+    required this.isComplete,
     this.onTap,
   });
 
@@ -52,29 +55,25 @@ class EventsList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,               // Better than clip
                     maxLines: 2,
                   ),
-                  // Divider(
-                  //   color: Theme.of(context).colorScheme.secondaryContainer,
-                  //   height: 20, // Specifies the total height of the divider area
-                  //   thickness: 2, // Specifies the thickness (height) of the line itself
-                  //   indent: 10, // Indentation (empty space) at the start of the divider
-                  //   endIndent: 10, // Indentation (empty space) at the end of the divider
-                  // ),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_rounded)
-            // Container(
-            //   height: 100,
-            //   width: 130,
-            //   // clipBehavior: Clip.antiAlias,
-            //   // decoration: BoxDecoration(
-            //   //     borderRadius: BorderRadius.all(Radius.circular(16))
-            //   // ),
-            //   child: Image.asset(
-            //     'assets/images/read.png',
-            //     fit: BoxFit.fill,
-            //   ),
-            // ),
+            Container(
+              padding: EdgeInsets.all(8),
+              margin: EdgeInsets.only(left: 8, right: 8),
+              decoration: BoxDecoration(
+                  color: isComplete?
+                  Theme.of(context).colorScheme.primary:
+                  Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+              child: Text(
+                isComplete?
+                "event_details_screen.done".tr():
+                "event_details_screen.pending".tr(),
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
           ],
         ),
       ),

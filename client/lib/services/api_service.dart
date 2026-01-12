@@ -565,8 +565,8 @@ class ApiService {
           'Access':'application/json'
         }
       ).timeout(Duration(seconds: 10));
-      printJson(response.body, "student dashboard");
-      print("getStudentDashboard: ${response.statusCode}");
+      // printJson(response.body, "student dashboard");
+      // print("getStudentDashboard: ${response.statusCode}");
       if (response.statusCode == 401){
         throw UnauthorizedException();
       }
@@ -592,6 +592,66 @@ class ApiService {
         throw ApiException('Unexpected error: $e');
       }
     }
+
+
+  Future<bool> markAsComplete({required String token, required int id}) async {
+    final url = Uri.parse(
+      '$_baseUrl/student/assignments/$id/complete'
+    ); // Assuming your endpoint is /api/classes
+
+    // 1. Construct the complete request body Map
+    final Map<String, dynamic> requestBody = {
+      "notes": "Completed successfully!",
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          // 🚨 CRITICAL: Include the Bearer token in the Authorization header
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(requestBody), // Encode the whole Map to JSON
+      ).timeout(const Duration(seconds: 10));
+
+      print(response.statusCode);
+
+      if (response.statusCode == 401) {
+        throw UnauthorizedException();
+      }
+
+      if (response.statusCode == 200) {
+        print('marked successfully!');
+        return true;
+      }
+
+      if (response.statusCode == 422) {
+        throw ValidationException();
+      }
+
+      final responseBody = jsonDecode(response.body);
+      throw ApiException(
+        responseBody['message'] ?? 'Failed to mark the assignment as complete',
+        statusCode: response.statusCode,
+      );
+    } on SocketException {
+      print("Network error - no internet connection");
+      throw NetworkException();
+    } on TimeoutException {
+      print("Network timeout");
+      throw NetworkException();
+    } on UnauthorizedException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } on ValidationException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
 //   Future<List<Student>?> getStudentsByClass(String token, int classId)async{
 //     final url = Uri.parse('$_baseUrl/classes');

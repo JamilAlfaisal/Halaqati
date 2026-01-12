@@ -200,6 +200,16 @@
       "weekly_schedule":"الجدول الاسبوعي",
       "teacher_details":"معلومات الشيخ"
     },
+    "event_details_screen":{
+      "event_details":"تفاصيل الوظيفة",
+      "pending":"قيد الانتظار",
+      "done":"تم الانجاز",
+      "type":"نوع الوظيفه",
+      "date":"موعد التسليم",
+      "teacher_instructions":"التعليمات",
+      "pages":"الصفحات المقرره",
+      "mark_as_complete":"حدد كمكتمل"
+    },
   "not_defined":"غير معروف",
   "hello": "مرحبا"
 }
