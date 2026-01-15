@@ -14,7 +14,7 @@ import 'package:halqati/screens/common_screens/root_screen.dart';
 import 'package:halqati/screens/teacher/student/student_bottom_appbar.dart';
 import 'package:halqati/screens/teacher/student/add_assignment_screen.dart';
 import 'package:halqati/screens/students/halaqa_details_screen.dart';
-import 'package:halqati/screens/students/home/event_details_screen.dart';
+import 'package:halqati/screens/students/event_details_screen.dart';
 
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -49,10 +49,10 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(),
-      initialRoute: '/',
+      initialRoute: '/root_screen',
       navigatorObservers: [routeObserver],
       routes: {
-        '/': (context) => const TestingWidgets(),
+        // '/': (context) => const RootScreen(),
         '/register_screen': (context) => const RegisterScreen(),
         '/login_screen':(context) => const LoginScreen(),
         '/home_app_bar':(context) => const HomeAppBar(),

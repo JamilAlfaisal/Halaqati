@@ -35,7 +35,7 @@ class _NumTextFieldState extends State<NumTextField> {
             controller: widget.textController,
             validator: (value){
               // print(value);
-              final forbiddenPattern  = RegExp(r'^[0-9]+$');
+              final forbiddenPattern  = RegExp(r'^[0-9\u0660-\u0669]+$');
               if (value == null || value.isEmpty) {
                 return 'add_halaqah_screen.empty_halaqa_name'.tr();
               }

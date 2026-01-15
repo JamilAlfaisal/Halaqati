@@ -31,8 +31,7 @@ class _TextFieldNormalState extends State<TextFieldNormal> {
         TextFormField(
           controller: widget.textController,
           validator: (value) {
-            final forbiddenPattern  = RegExp(r'^[a-zA-Z0-9_-]+$');
-            print(value);
+            final forbiddenPattern  = RegExp(r'^[ a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\u06F0-\u06F9_-]+$');
             if (value == null || value.isEmpty) {
               return 'add_halaqah_screen.empty_halaqa_name'.tr();
             }
@@ -43,7 +42,6 @@ class _TextFieldNormalState extends State<TextFieldNormal> {
           },
           decoration: InputDecoration(
             hintText: widget.hintText,
-            // prefixIcon:
           ),
         ),
       ],

@@ -77,6 +77,7 @@ class _HalaqahScreenState extends ConsumerState<HalaqahScreen> {
   Widget build(BuildContext context) {
     // final asyncHalaqah = ref.watch(classDetailsProvider(widget.id));
     final asyncHalaqah = ref.watch(classDetailsProvider);
+
     print(asyncHalaqah.error);
 
     void updateHalaqah() async {

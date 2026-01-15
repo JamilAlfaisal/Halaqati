@@ -19,19 +19,36 @@ class HalaqatList extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 5,
-        children: [
-          Text(
-            title,
-            style: TextTheme.of(context).bodyLarge,
-          ),
-          Text(
-            "$studentNumber ${'students'.tr()}",
-            style: TextTheme.of(context).titleSmall,
-          ),
-        ],
+      child: Container(
+        margin: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+          ],
+        ),
+        child: Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 5,
+              children: [
+                Text(
+                  title,
+                  style: TextTheme.of(context).bodyLarge,
+                ),
+                Text(
+                  "$studentNumber ${'students'.tr()}",
+                  style: TextTheme.of(context).titleSmall,
+                ),
+              ],
+            ),
+            Spacer(),
+            Icon(Icons.arrow_forward_rounded)
+          ],
+        ),
       ),
     );
   }

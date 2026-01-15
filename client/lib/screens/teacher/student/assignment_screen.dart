@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/models/assignment_class.dart';
 import 'package:halqati/provider/teacher_providers/assignment_provider.dart';
+import 'package:halqati/provider/teacher_providers/students_provider.dart';
 import 'package:halqati/widgets/appbar/appbar_with_button.dart';
 import 'package:halqati/widgets/buttons/floating_button_icon.dart';
 import 'package:halqati/widgets/buttons/filter_button.dart';
@@ -25,6 +26,7 @@ class _AssignmentScreenState extends ConsumerState<AssignmentScreen> {
   Widget build(BuildContext context) {
 
     final asyncAssignment = ref.read(assignmentProvider);
+    final int studentId = ref.watch(selectedStudentIdProvider)??0;
 
     void handleGettingAssignments() async {
 
@@ -73,11 +75,12 @@ class _AssignmentScreenState extends ConsumerState<AssignmentScreen> {
                   child: ListView.builder(
                     itemCount: filteredAssignment?.length??0,
                     itemBuilder: (context, index) {
-                      return AssignmentList(
+                      return studentId == filteredAssignment?[index].studentId?
+                      AssignmentList(
                           title: filteredAssignment?[index].title??"",
                           dueDate: filteredAssignment?[index].dueDate??"",
                           onPressed: (){}
-                      );
+                      ):SizedBox();
                     },
                   ),
                 ),

@@ -165,7 +165,7 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
               Padding(
                 padding: EdgeInsets.all(16),
                 child: GestureDetector(
-                  onTap: !submitting?() async {
+                  onTap: assignmentDetails.isCompleted??false?null:!submitting?() async {
 
                     setState(() {
                       submitting = true;
@@ -189,7 +189,9 @@ class _EventDetailsScreenState extends ConsumerState<EventDetailsScreen> {
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: assignmentDetails.isCompleted??false?
+                      Colors.grey.shade300:
+                      Theme.of(context).colorScheme.secondary,
                     ),
                     child: Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceAround,
