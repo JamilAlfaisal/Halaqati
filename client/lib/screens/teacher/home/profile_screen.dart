@@ -8,6 +8,7 @@ import 'package:halqati/models/teacher.dart';
 import 'package:halqati/provider/teacher_providers/teacher_provider.dart';
 import 'package:halqati/widgets/profile/teacher_profile.dart';
 import 'package:intl/intl.dart';
+import 'package:halqati/widgets/cards/user_details.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -45,61 +46,72 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 "teacher_profile.user_details".tr(),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              SizedBox(height: 5,),
-              Text(
-                "${"teacher_profile.email".tr()}: ${teacher?.email??"teacher_profile.no_email".tr()}",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 5,),
-              Text(
-                "${"teacher_profile.phone_number".tr()}: ${teacher?.phone??"teacher_profile.no_phone".tr()}",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 5,),
-              Text(
-                "${"teacher_profile.DOB".tr()}: ${getDOB(teacher?.dateOfBirth)}",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 5,),
-              Text(
-                "${"teacher_profile.password".tr()}: ••••••••",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 5,),
-              GestureDetector(
-                onTap: (){
-                  final snackBar = SnackBar(
-                    content: Text('not_available'.tr()),
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-                child: Text(
-                  "teacher_profile.change_password".tr(),
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.labelSmall!.color,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Theme.of(context).textTheme.labelSmall!.color,
-                    fontSize: Theme.of(context).textTheme.labelSmall!.fontSize
-                  ),
-                ),
+              SizedBox(height: 10,),
+              UserDetails(
+                phone: teacher?.phone??"teacher_profile.no_phoneno_phone".tr(),
+                email: teacher?.email??"teacher_profile.no_email".tr(),
+                dob: teacher?.dateOfBirth
               ),
               SizedBox(height: 20,),
               Text(
                 "teacher_profile.halaqat_details".tr(),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              SizedBox(height: 5,),
-              Text(
-                "${"teacher_profile.halaqat_number".tr()}: ${halaqatDetails['classCount'].toString()}",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 5,),
-              Text(
-                "${"teacher_profile.student_number".tr()}: ${halaqatDetails['studentCount'].toString()}",
-                style: Theme.of(context).textTheme.bodyMedium,
+              SizedBox(height: 10,),
+              Center(
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  spacing: 40,
+                  runSpacing: 40,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          // Text(
+                          //   "teacher_profile.halaqat_number".tr(),
+                          //   style: Theme.of(context).textTheme.bodyMedium,
+                          // ),
+                          Icon(Icons.co_present_outlined),
+                          Text(
+                            "${halaqatDetails['classCount'].toString()} ${"teacher_profile.class".tr()}",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          // Text(
+                          //   "teacher_profile.student_number".tr(),
+                          //   style: Theme.of(context).textTheme.bodyLarge,
+                          // ),
+                          Icon(Icons.school_outlined),
+                          Text(
+                            "${halaqatDetails['studentCount'].toString()} ${"teacher_profile.student".tr()}",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

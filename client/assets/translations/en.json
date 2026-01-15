@@ -127,7 +127,9 @@
       "no_DOB": "No Date Of Birth",
       "halaqat_details": "Halaqat Details",
       "halaqat_number": "Halaqat Number",
-      "student_number": "Student Number"
+      "student_number": "Student Number",
+      "student":"Students",
+      "class":"Classes"
     },
     "settings":{
       "title": "Settings",

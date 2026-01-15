@@ -5,6 +5,8 @@ import 'package:halqati/core/exceptions/api_exceptions.dart';
 import 'package:halqati/models/student.dart';
 import 'package:halqati/provider/teacher_providers/students_provider.dart';
 import 'package:halqati/widgets/appbar/appbar_with_button.dart';
+import 'package:halqati/widgets/buttons/page_number.dart';
+import 'package:halqati/widgets/cards/user_details.dart';
 import 'package:halqati/widgets/profile/student_profile_left.dart';
 
 
@@ -18,6 +20,8 @@ class StudentProfile extends ConsumerStatefulWidget {
 }
 
 class _StudentProfileState extends ConsumerState<StudentProfile> {
+  final List<int> pages = List.generate(604, (index) => index + 1);
+
   @override
   Widget build(BuildContext context) {
     final studentsAsync = ref.watch(studentsProvider);
@@ -38,8 +42,8 @@ class _StudentProfileState extends ConsumerState<StudentProfile> {
 
             return  Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   StudentProfileLeft(student: student,),
                   SizedBox(height: 20,),
@@ -47,20 +51,36 @@ class _StudentProfileState extends ConsumerState<StudentProfile> {
                     "student_bottom_appbar.profile.profile".tr(),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  SizedBox(height: 5,),
-                  Text(
-                    "${"teacher_profile.email".tr()}: ${student.email??"teacher_profile.no_email".tr()}",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  SizedBox(height: 5,),
-                  Text(
-                    "${"student_bottom_appbar.profile.phone".tr()}: ${student.phone??"student_bottom_appbar.profile.no_phone".tr()}",
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  SizedBox(height: 10,),
+                  UserDetails(
+                    email: student.email??"teacher_profile.no_email".tr(),
+                    phone: student.phone??"student_bottom_appbar.profile.no_phone".tr(),
+                    dob: student.dateOfBirth,
                   ),
                   SizedBox(height: 20,),
                   Text(
                     "student_bottom_appbar.profile.memorized_pages".tr(),
                     style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  SizedBox(
+                    height: 250,
+                    child: GridView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: pages.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,       // Number of columns (e.g., 4 page numbers per row)
+                          crossAxisSpacing: 10,    // Horizontal space between items
+                          mainAxisSpacing: 10,     // Vertical space between items
+                          childAspectRatio: 1,     // Makes the items square
+                        ),
+                        itemBuilder: (context, index){
+                          return PageNumber(
+                              onPressed: (){},
+                              num: pages[index],
+                              selected: false
+                          );
+                        }
+                    ),
                   ),
                 ],
               ),
@@ -81,7 +101,6 @@ class _StudentProfileState extends ConsumerState<StudentProfile> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 16),
-                  // ✅ Add retry button for errors
                   ElevatedButton(
                     onPressed: () => ref.invalidate(studentsProvider),
                     child: Text("home_screen.retry".tr()),

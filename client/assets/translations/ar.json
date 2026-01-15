@@ -127,7 +127,9 @@
     "no_DOB": "لا يوجد تاريخ ميلاد",
     "halaqat_details": "معلومات الحلقات",
     "halaqat_number": "عدد الحالقات",
-    "student_number": "عدد التلاميذ"
+    "student_number": "عدد التلاميذ",
+    "student":"تلميذ",
+    "class":"صف"
   },
   "settings":{
       "title": "الاعدادات",

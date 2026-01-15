@@ -13,7 +13,7 @@ class ApiService {
   // Android Emulator: 10.0.2.2
   // iOS Simulator: 127.0.0.1 (or localhost)
   // Physical Device (if on same network): Your PC's local IP (e.g., 192.168.1.10)
-  static const String _baseUrl = 'http://localhost:8000/api';
+  static const String _baseUrl = 'https://unnotional-jayme-gamophyllous.ngrok-free.dev/api';
 
   Future <Map<String, dynamic>?> login(String phone, String pin) async {
     // print("this is the base url in the service page $_baseUrl");
@@ -339,12 +339,13 @@ class ApiService {
     required String description,
     required int capacity,
     required String roomNumber,
-    required List<String> scheduleDays, // List of days
-    required String scheduleTime,       // Time string
+    required List<String> scheduleDays,
+    required String scheduleTime,
     required int id
   }) async {
+
     final url = Uri.parse(
-        '$_baseUrl/classes/$id'); // Assuming your endpoint is /api/classes
+        '$_baseUrl/classes/$id');
 
     // 1. Construct the complete request body Map
     final Map<String, dynamic> requestBody = {
@@ -369,7 +370,7 @@ class ApiService {
         },
         body: jsonEncode(requestBody), // Encode the whole Map to JSON
       ).timeout(const Duration(seconds: 10));
-
+      print("updateClasses: ${response.statusCode}");
       if (response.statusCode == 401) {
         // print("Unauthorized - invalid token");
         throw UnauthorizedException();
@@ -523,6 +524,8 @@ class ApiService {
         },
       ).timeout(Duration(seconds: 10));
 
+      print("response.statusCode: ${response.statusCode}");
+
       if(response.statusCode == 401){
         throw UnauthorizedException();
       }
@@ -532,7 +535,7 @@ class ApiService {
         if (data != null && data is List) {
           return data.map((json) => AssignmentClass.fromJson(json)).toList();
         }
-        return []; // Empty but valid response
+        return [];
       } else {
         throw ApiException(
           'Failed to fetch Assignment: ${response.statusCode}',
@@ -565,6 +568,7 @@ class ApiService {
           'Access':'application/json'
         }
       ).timeout(Duration(seconds: 10));
+      print("response.statusCode: ${response.statusCode}");
       // printJson(response.body, "student dashboard");
       // print("getStudentDashboard: ${response.statusCode}");
       if (response.statusCode == 401){

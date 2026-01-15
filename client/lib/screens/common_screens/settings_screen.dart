@@ -30,10 +30,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Container(
                 width: double.infinity,
                 height: 80,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                // padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Theme.of(context).primaryColor),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,10 +65,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Container(
                 width: double.infinity,
                 height: 80,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                // padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Theme.of(context).primaryColor),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,10 +94,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Container(
                 width: double.infinity,
                 height: 80,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Theme.of(context).primaryColor),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,10 +122,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Container(
                 width: double.infinity,
                 height: 80,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Theme.of(context).primaryColor),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(color: Colors.black12, blurRadius: 5,spreadRadius: 1),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
